@@ -1,0 +1,93 @@
+posilani stranky  www.retrogames.com z cache
+============================================
+vypnout distributed.net
+
+38314 B long
+
+squid  4528
+apache 3980 4416?
+apache /local/ 3808
+
+smartcache-gcj  	      6512
+
+smart cache                   2856 2972(aft. local fix)
+smart cache + tya jit         4500
+
+smart cache -ms1m             2792 
+smart cache + tya jit -ms1m   4064
+
+smart cache -ms2m             3092
+smart cache + tya jit -ms2m   5348
+
+smart cache -ms3m             3768 
+smart cache -ms3m  -O         3660 
+smart cache + tya jit -ms3m   5432
+
+smart cache -ms4m             3932
+smart cache -ms4m + tya       5468
+
+smart cache -ms5m             3976
+                  + tya       5504
+smart cache -ms6m             4048
+                  + tya       5460
+smart cache -ms7m             4068
+                  + tya       5592
+
+GC MEMORY USED
+==============
+jdk1.1/linux
+
+gcarraysize     VIRT
+1		3584
+1000            4312
+4000 		6948
+6000            7976
+8000            9208
+
+Benchmark run #2
+================
+Pentium 4, 256 MB RAM, Windows XP, Java 1.4.1-rc
+Filesystem NTFS, 40,76 MB/sec
+casto to pada
+
+-ms1m  11850  -server 11193
+-ms2m  11649  -server 11214
+-ms3m  11766  -server 10455
+-ms4m  11619  -server 11379
+-ms5m  11733  -server 11268
+-ms7m  11769  -server 11160
+-ms16m 11906  -server 11253
+-ms32m 11760  -server 11124
+-ms64m 11673  -server 10983
+
+Apache on localhost 9933
+Apache cache 14886
+
+Knoppix Linux 3.1 2.2.40-xfs kernel. Java 1.3.1-02b-FCS
+-ms1m 32118  
+-ms2m 32160
+-ms3m 31326
+-ms8m 32049  -server 32868
+-ms16m 32448 -server 32286
+-ms32m 32472 -server 33888
+-ms64m 32913 -server 33996
+
+Squid memory used
+=================
+Setup: Max mem  200KB. About 143 memory bytes for 1 cache entry
+avg. obj size 12.2K. 48 bytes per entry in cache index file.
+
+10MB 
+ 4127 mallinfo memory used - 843
+20 MB
+ 4331 mallinfo memory used - 1551
+30 MB
+ 4377 used - 1971 entries
+40484 kB .
+ 4502 used - 2777 entries
+50596 kB
+ 4546 used - 3478 entries
+49936 KB   
+ 4615 used - 4105 entries
+59440 KB
+ 4703 used - 4843 entries

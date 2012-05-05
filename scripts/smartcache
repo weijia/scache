@@ -1,0 +1,84 @@
+#! /bin/sh
+#Start-up script for running Smart Cache
+#startup script tested with Debian GNU/Linux 2.1,3.0 and jdk1.1
+
+#NOTE: Smart Cache do not work well with native threads
+# tested on jdk 1.1.8 Linux/Glibc 2.2
+#   PUBLIC DOMAIN - NO RIGHTS RESERVED
+
+export THREADS_FLAG=green
+export NS_JAVA=true
+
+if [ -z $SMARTCACHE_LAUNCHER ]; 
+then
+		SMARTCACHE_LAUNCHER=java
+fi
+
+if [ -z $SMARTCACHE_LAUNCHER_OPTIONS ];
+then
+		SMARTCACHE_LAUNCHER_OPTIONS=-ms1m
+fi
+
+if [ -z $SMARTCACHE_JAR ]; 
+then
+		SMARTCACHE_JAR=/usr/share/java/scache.jar
+fi
+
+if [ -z $SMARTCACHE_CFG ]; 
+then
+	SMARTCACHE_CFG=/etc/scache
+	
+	if [ -d $HOME/.scache ]; 
+	then
+	            SMARTCACHE_CFG=$HOME/.scache
+	else
+	  #do not allow root to run scache
+	  if [ `id -u` = 0 ]; then
+	     su -p proxy -c "$0 $*"
+	     exit
+	  fi
+	fi
+fi
+	
+if [ -z $SMARTCACHE_CLASSPATH ]; then
+      if [ $CLASSPATH ]; 
+      then
+             SMARTCACHE_CLASSPATH=$CLASSPATH
+      else
+      #check for some JDK-versions
+             if [ -r /usr/lib/jdk1.1/lib/classes.zip ]; then
+                SMARTCACHE_CLASSPATH=/usr/lib/jdk1.1/lib/classes.zip
+             elif [ -r /usr/lib/jdk1.1/lib/classes.jar ]; then
+	        SMARTCACHE_CLASSPATH=/usr/lib/jdk1.1/lib/classes.jar
+	     elif [ -r /usr/lib/jre1.1/lib/rt.jar ]; then
+	        SMARTCACHE_CLASSPATH=/usr/lib/jre1.1/lib/rt.jar:/usr/lib/jre1.1/lib/i18n.jar
+	     elif [ -r /usr/lib/jdk1.2/jre/lib/rt.jar ]; then
+	        SMARTCACHE_CLASSPATH=/usr/lib/jdk1.2/jre/lib/rt.jar;/usr/lib/jdk1.2/jre/lib/i18n.jar
+             fi
+      fi
+fi
+
+#GO!
+umask 027
+
+if [ $SMARTCACHE_CLASSPATH ]; 
+then
+#change to root (allows unmounting filesystems)
+cd /
+if [ $SAYPID ]; then
+$SMARTCACHE_LAUNCHER $SMARTCACHE_LAUNCHER_OPTIONS -classpath $SMARTCACHE_CLASSPATH:$SMARTCACHE_JAR scache -cfgdir $SMARTCACHE_CFG $* &>/dev/null &
+else
+exec $SMARTCACHE_LAUNCHER $SMARTCACHE_LAUNCHER_OPTIONS -classpath $SMARTCACHE_CLASSPATH:$SMARTCACHE_JAR scache -cfgdir $SMARTCACHE_CFG $*
+fi
+else
+#without class path, try run jar file directly
+if [ $SAYPID ]; then
+$SMARTCACHE_LAUNCHER $SMARTCACHE_LAUNCHER_OPTIONS -jar $SMARTCACHE_JAR -cfgdir $SMARTCACHE_CFG $* &>/dev/null &
+else
+exec $SMARTCACHE_LAUNCHER $SMARTCACHE_LAUNCHER_OPTIONS -jar $SMARTCACHE_JAR -cfgdir $SMARTCACHE_CFG $*
+fi
+fi
+
+if [ $SAYPID ]; then
+ echo $!
+fi 

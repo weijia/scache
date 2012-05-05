@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>c:\netscache.html</title>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<div align="center">
+<h1>Smart cache configuration <span lang="en-ca">under</span> Netware 6</h1>
+<div align="left">
+<h2><span lang="en-ca">Before we begin</span></h2>
+<h3><span lang="en-ca">Audience<br>
+</span>
+</h3>
+<span lang="en-ca">This set of notes have been arranged to help you configure Smart Cache on
+a netware box. &nbsp;Although those steps may (and in many cases should)
+work on netware 5.1, I currently have no way to verify it. &nbsp;Bear also
+in mind that while I try to make those steps as easy as possible, some discussions
+about netware implementation and design views require a minimal understanding
+of how the thing actually works. &nbsp;It is also assumed that you know reasonably
+well how to operate Smart Cache. &nbsp;There's nothing more boring for someone
+than to read something that he or she already knows, so I won't repeat what's
+already written in other FAQ or manual except to stress an important point.<br>
+<br>
+</span>
+<h3><span lang="en-ca">Architectural considerations</span></h3>
+<span lang="en-ca">There're several things to consider when installing a product like Smart
+Cache on a Netware Server. &nbsp;First, there's the version required. &nbsp;From
+my personal experience, versions prior to .84 wouldn't cache anything, and
+this is due to the way the program was checking about FS write ability.<br>
+<br>
+On another hand, unlike other operating systems, I'd strongly suggest to
+dedicate a fixed-size volume to the dynamic cache files. &nbsp;The reason
+for this is simple: if you have misconfigured garbage collection and you
+have smart cache running on the <tt>SYS</tt>: volume, you're basically trying
+to assassinate your server. &nbsp;In Unix/linux, folders are most of the
+time mount points of different partition/slices, and in the NT world, at
+least on 2000/xp, you can make the JVM act as a service user and hence enable
+quota on a volume. &nbsp;This could also be done in Netware if SCache had
+a way to authenticate to NDS without chewing a connection licence AND was
+using the FS <i>as</i> this entity: in that case quotas could be used to
+prevent volume clogging. &nbsp;But it's currently not the case, and will
+most probably never be.<br>
+<br>
+So now, here we are.<br>
+<br>
+</span>
+<h2><span lang="en-ca">Preparing the server to host Smart Cache</span></h2>
+<h3><span lang="en-ca">File system preparation</span></h3>
+<span lang="en-ca">Make sure you have a volume having enough space to hold dynamic cache files.
+&nbsp;You have the choice between creating a new fixed-size volume in an
+existing pool, create a new pool &amp; new volume, or simply use an existing
+volume and resort to aggressive garbage collection and proper configuration
+to prevent the cache to inflate too much.<br>
+<br>
+You should also decide at this point if you're to keep the program files
+and the dynamic cache files on different volumes or not. &nbsp;From the program's
+point of view, it doesn't matter, but to the administrator, it may. ;-)<br>
+<br>
+</span>
+<h3><span lang="en-ca">IP Stack configuration</span></h3>
+<span lang="en-ca">As you most probably know, Smart Cache can be bound to a specific ip address.
+&nbsp;If you'd like to bind the service to its own ip address without adding
+a network card, use the <tt>add secondary ipaddress ww.xx.yy.zz</tt> directive
+at the server console before starting the program. &nbsp;Also, of course,
+make sure you add it after your <i>real</i> network cards bindings in <tt>sys:system\autoexec.ncf</tt>
+.<br>
+</span>
+<h2><span lang="en-ca">Installation proper</span></h2>
+<span lang="en-ca">Extract a current archive on your favorite workstation, and then send it
+over to your netware server. &nbsp;If you are feeling like a courageous soul,
+you may even try to inflate the archive using the console <tt>unzip</tt>
+utility, although I never managed to make it work properly.<br>
+<br>
+Once the extracted files are where you want them to be, copy the "samples"
+configuration files at the root of the program folder and edit them according
+to your needs. <br>
+<br>
+</span>
+<table cellpadding="2" cellspacing="2" border="1" width="50%"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="top"><span lang="en-ca"><small><font color="#3333ff"><tt><small>########################################################<br>
+#DO NOT USE ROOT directory!!! (for example c:\)<br>
+# unless you have a dedicated partition for Smart Cache<br>
+# and removed check for that from source code.<br>
+########################################################<br>
+CacheRoot scratchvol:/scache </small></tt></font><br>
+      </small></span></td>
+    </tr>
+    <tr>
+      <td valign="top"><span lang="en-ca"><small>Exert from scache.conf, showing how to declare
+FS paths in scache. &nbsp;Take note that the backslash can also be used.<br>
+      </small></span></td>
+    </tr>
+  </tbody>
+</table>
+<span lang="en-ca">
+<br>
+</span>
+</div>
+<div align="left"><span lang="en-ca">To make the thing to work, I'd suggest the reader to create
+a <tt>.ncf</tt> file which would be located within the search path of your
+server and would contain instructions to:<br>
+&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; Make Java use the folder in which
+scache is in as the current directory,<br>
+&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; Launch Smart Cache,<br>
+&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; Launch Smart Cache garbage collection
+repeatedly.<br>
+  </span>
+<div align="center">
+<table cellpadding="2" cellspacing="2" border="1" width="50%">
+  <tbody>
+    <tr>
+      <td valign="top"><font color="#3333ff"><small><small><tt>ENVSET CWD=APPS:\Java\SCache<br>
+JAVA -cp . -ms4m scache -cfgdir APPS:\Java\scache<br>
+JAVA -cp . -ms4m scache -gc 1440 -cfgdir APPS:\Java\scache</tt></small></small></font><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><small>Typical Smart Cache startup file. &nbsp;Please
+note that the -cfgdir is used in both cases, which in my experience was required.
+&nbsp;Your mileage may vary</small>.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+  <p><span lang="en-ca"><br>
+If everything went well, you'd see something similar to the following on
+the server console logger screen:<font color="#3333ff"><small><small><tt><br>
+</tt></small></small></font>
+  </span></p>
+<div align="center">
+<table cellpadding="2" cellspacing="0" border="1" width="50%" bgcolor="#000000" bordercolor="#000000" style="border-collapse: collapse">
+  <tbody>
+    <tr>
+      <td><span lang="en-ca"><font face="Courier New" size="2" color="#FFFFFF">
+      Symantec Java! JustInTime Compiler Version 3.10.110(x) for the Java 2 
+      Platform&nbsp; <br>
+      Copyright (C) 1996-99 Symantec Corporation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Symantec Java! JustInTime Compiler Version 3.10.110(x) for the Java 2 
+      Platform&nbsp; <br>
+      Copyright (C) 1996-99 Symantec Corporation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Smart Cache 0.84 - full featured caching proxy server and web forwarder.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Copyright (c) Radim Kolar 1998-2003. Opensource software; There is NO 
+      warranty. <br>
+      See the GNU General Public License version 2 or later for copying 
+      conditions.&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      &quot;A person is said to be established in self-realization and is called a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      yogi [or mystic] when he is fully satisfied by virtue of acquired 
+      knowledge&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      and realization. Such a person is situated in transcendence and is&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      self-controlled. He sees everything--whether it be pebbles, stones or gold 
+      --&nbsp;&nbsp; <br>
+&nbsp;-- as the same.&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      - Bhagavad-gita 6.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Smart Cache 0.84 - full featured caching proxy server and web forwarder.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Copyright (c) Radim Kolar 1998-2003. Opensource software; There is NO 
+      warranty. <br>
+      See the GNU General Public License version 2 or later for copying 
+      conditions.&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      &quot;The Supreme Personality of Godhead said: Son of Prtha, a 
+      transcendentalist&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      engaged in auspicious activities does not meet with destruction either in 
+      this&nbsp; <br>
+      world or in the spiritual world; one who does good, My friend, is never&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      overcome by evil.&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      - Bhagavad-gita 6.40&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      [INFO] New rule &quot;*/ads*&quot; made old rule &quot;http://ads.*&quot; obsolete.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      [INFO] New rule &quot;*/ads*&quot; made old rule &quot;http://ads.*&quot; obsolete.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Checking filesystem (scratchvol:/scache)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp; Filesystem allows ending dot in filename: false&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp; Filesystem allows backslash in filename : false&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp; Filesystem reports real directory size&nbsp; : false&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 Smart Cache 0.84 ready on 8080/10.192.0.81&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Checking filesystem (scratchvol:/scache)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp; Filesystem allows backslash in filename : false&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp; Filesystem reports real directory size&nbsp; : false&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 running garbage collection.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 Garbage collector version 0.22 initialized.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 Cache size watermarks:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High: 
+      1195376640 B (95%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      Low: 1132462080 B (90%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 Block size: 1024 B, avg. directory size: 2048 
+      B.&nbsp;&nbsp; <br>
+      Mon Apr 07 10:50:07 EDT 2003 File sizes: Min=0 B, Max=40960000 B.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 GC Array size: 5000, Max age: 365.0 d.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:50:07 EDT 2003 Scanning cache directory. This takes some 
+      time...&nbsp; <br>
+      Mon Apr 07 10:51:26 EDT 2003 CACHE SCAN SUMMARY:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High watermark: 
+      1195376640 B (95%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disk storage: 
+      111186944 Bytes used.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cache is 8.8 
+      percent full.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      (15052 files and 4659 dirs.)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      avg. file size: 7386 Bytes.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      avg. directory: 23864 B in 3 files.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5000 of 5000 gc 
+      slots used.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time marks: 
+      low=62.970886 middle=81.46025 high<br>
+      =363.8706&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003 Cache size is bellow lowmark - No cleaning 
+      needed. <br>
+      Mon Apr 07 10:51:26 EDT 2003 garbage collection ended.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+      Mon Apr 07 10:51:26 EDT 2003 waiting 1440 m for another run.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </font></span></td>
+    </tr>
+  </tbody>
+</table>
+<div align="left"><span lang="en-ca"><br>
+  </span>
+</div>
+</div>
+</div>
+<p align="left"><span lang="en-ca">If you get something like &quot;Class scache 
+exited with error level 1&quot;, something is wrong with your NCF or paths.&nbsp;
+</span>
+</div>
+</body>
+</html>

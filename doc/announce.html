@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st March 2002), see www.w3.org">
+<title>NetMag 13/98 : Smart Cache</title>
+</head>
+<body text="#000000" link="#0000FF" vlink="#000080" alink=
+"#FF00FF">
+<table width="600" cols="2">
+<tr>
+<td width="150" valign="top"><font size="+4">&nbsp;<br>
+</font>
+<p><font size="+4"><br>
+</font></p>
+
+<p><font size="+1"><b>NetMag<br>
+NetMag Daily</b></font></p>
+
+<hr>
+<p><font size="+1"><b>Anketa<br>
+Bazar<br>
+Consulting<br>
+FAQ<br>
+Help!<br>
+NetMag Postou<br>
+O nas a NetMagu<br>
+Obsah cisel<br>
+Registrace<br>
+Reklama u nas</b></font></p>
+
+<hr>
+<p><font size="+1"><b>NetTip<br>
+Lamers List<br>
+LiterNet<br>
+CzechCraft<br>
+NC InfoCentrum<br>
+Unix InfoCentrum<br>
+Peering v Cechach<br>
+Postavte si PC</b></font></p>
+
+<hr>
+<p><font size="+1"><b>TechNet<br>
+AdBanner<br>
+Digit Server<br>
+FSG<br>
+ISDN<br>
+Megaprint<br>
+Mobil Server<br>
+Notebooky<br>
+Vztlak<br>
+</b></font></p>
+</td>
+<td width="30">&nbsp;</td>
+<td valign="top">
+<center>
+<p><b><i><font size="+4">Smart Cache</font></i></b><br>
+<font size="-1">by <a href="mailto:hsn@cybermail.net">Radim
+Kolar</a></font><br>
+</p>
+</center>
+
+<br>
+je mnou vyrobena proxy cache v Jave. Vyrobil jsem ji pochopitelne
+pro primarne pro sebe, protoze mne zadna proxy cache moc (rekneme
+spis vubec) nevyhovovala. Vyzkousel jsem Squida (zere moc pameti a
+strasne spatne se vyndavaji nejake objekty z cache), Apache (dobra
+parodie na cache), a IBM ICSS (verze 4.2 je naprosto nepouzitelna
+jako cache, 4.1 mela problemy s updatem ridicich souboru pri vice
+uzivatelich soucasne). 
+
+<p>Konkurence:</p>
+
+<h3>Netscape</h3>
+
+<ul>
+<li>Uklada (vetsinou) cache do jednoho adresare, coz zpusobuje jeho
+velmi pomale prohledavani/updatovani kdyz tam mate vice (tak 5000)
+souboru.</li>
+
+<li>ztraci obcas reference na soubory v cache ulozene, takze i kdyz
+tam ty soubory fyzicky na disku jsou, mysli si ze je tam nema.</li>
+
+<li>Neumoznuje vynutit garbage collection a tyto soubory z disku
+odstranit</li>
+
+<li>Necachuje dokumenty bez Last-Modified</li>
+
+<li>Nacachuje dokumenty s Cookies</li>
+
+<li>Velmi casto si mysli, viz about:cache, ze ma v cache daleko vic
+souboru, coz zpusobuje jeho castou manii s garbage collection,
+kterou dela pri exitu</li>
+
+<li>Garbage Collection dela opravdu zajimave. Mel jsem cache 22MB o
+kterych si myslel, ze je to 30M a po GC ji smrsknul na 0.9MB. Dost
+mne to otravilo, protoze jsem tam mel nacachovane ruzne obrazky ze
+sites kam casto lezu.</li>
+</ul>
+
+<h3>MSIE</h3>
+
+<ul>
+<li>jeste horsi nez Netchcipak.</li>
+
+<li>Nacachuje vam i dokument u ktereho se neshoduje content-size s
+delkou, kterou obdrzel od serveru. Vzhledem k tomu, ze to byl .zip
+tak se mne na nej nepovedlo udelat reload, tak jsem musel udelat
+clear cache.</li>
+</ul>
+
+<h3>Squid</h3>
+
+<ul>
+<li>Abnormalne velka spotreba pameti</li>
+
+<li>Vzhledem k tomu, ze cachuje i negativni odpovedi, tak prepise
+dobry objekt v cache nejakou chybou - nejlepe request timeout ci
+tak nejak.</li>
+
+<li>Necachuje dokumenty s C00kies, kterych je bohuzel vetsina.</li>
+</ul>
+
+<p>Moje cache byla vytvorena tak, aby to byla naprosto idealni vec
+pro dialup uzivatele. Dial-up uzivatel ma sve specifika - nechce
+byt moc dlouho on-line, chce mit moznost si offline prohlizet
+cachovane stranky a nechce tahat ruzne nezajimave veci - napr.
+reklamu. Pochopitelne si rad prohledava cache a diva se co v ni je.
+Dalsi vec, kterou urcite nemate radi jsou ruzne SSI generovane
+stranky (napr. na <a href="http://www.seznam.cz">Seznamu</a>),
+takze po stisku go-back (v Seznamu se to docela dost pouziva) se
+vam zacne minula stranka tahat znovu ze serveru + reklama, na coz
+ja osobne vubec nejsem zvedavej.</p>
+
+<p>Cache lze nastavit do rezimu cachuj uplne vsechno, co prez ni
+proleze (idealni pro dialupy), takze kdyz jste pak offline, tak si
+muzete prohlizet stranky kompletni vcetne napr. stavu pocitadla. I
+v tomto rezimu nemusite mit strach, ze pokud jste online, tak ze
+budete dostavat stare objekty. Tento pracovni rezim ma jeste jednu
+vyhodu. Vzhledem k tomu, ze cachuje i objekty, ktere by se normalne
+necachovali, tak pokud nejaky server obsahuje reklamy, tak v
+naproste vetsine (zalezi jak ma server ty reklamy zarizene)
+natahnete z vice stridajicich se reklam jen jednu za on-line
+session, coz rozhodne potesi. Jeste vice potesi moznost si reklamy
+zablokovat uplne.</p>
+
+<p>Jeste k tem reklamam, protoze cache umi posilat i redirekty,
+tak muzete presmerovavat reklamu i na vase lokalni soubory. Je
+velmi dobrej ftip mit u reklamy na Altaviste ci Yahoo nastaven
+redirekt na lokalni soubor obsahujici reklamu na NetMag. Uvidite,
+kolik lidi to uzemni! Mne se tohle osobne _VELMI_ libi.</p>
+
+<p>Dalsi z featur je, ze nechcete cekat online, az se natahne cela
+stranka, ale offline by jste si ji radi prohledli. V tom pripade,
+po vhodnem nastaveni cache, se vam dotahuji objekty i kdyz v
+browseru date STOP. Napriklad jsem si chtel procist <a href=
+"http://www.mobil.cz">Mobil server</a>, tak jsem nabehl na jeho
+homepage, jednu ruku na ESC a druhou na mys a provedl jsem velmi
+rychly sled click-esc. Po odklikani vsech linku co na homepage
+meli, jsem vypadl jinam a cache zatim dotahavala prislusne
+dokumenty stylem packety behaji kolem sveta.</p>
+
+<p>S tim souvisi dalsi vec a tou je vyndavani objektu z cache.
+Objekty v cache neobsahuji navic zadne informace (napr. http
+hlavicky ktere se z Gifacu nevyndavaji moc snadno) a tak je muzete
+bez problemu ihned pouzit. Soubory se ukladaji do tzv. CERN - style
+adresarove struktury a tak je v ni snadno a rychle najdete.
+Pozadovane soubory pochopitelne muzete presunout primo tam, kde je
+potrebujete. Nemusite se bat, ze by to cache nejak uskodilo. Jedina
+potencionalne mirne nebezpecna akce je, pokud cachi smazete adresar
+do ktereho se pokousi nahrat nejake objekty. V tom pripade, se
+prislusne objekty pochopitelne na disk uz neulozi. Adresar se
+vytvori znovu, az se ukonci vsechny transakce, ktere jej pouzivaji
+a zacne transakce nova.</p>
+
+<h3>Garbage collection</h3>
+
+Je jedina vec, kterou zatim (mozna ze az budete cist tento clanek,
+tak to uz nebude pravda) cache neumi. Existuji totiz ruzne zpusoby
+jak tuto operaci provadet (ciste podle LRU, LRU + podle delky, LRU
++ delky + typu + URL) a zatim jsem se nerozhodl, ktery pouziji (asi
+nejakou jejich kombinaci) a hlavne jak vice techto algoritmu
+zkombinovat do jednoho. Zde bych uvital nejake vase rady. 
+
+<p>Pokud ovsem chcete klasickou LRU GC, tak to neni zadny problem.
+Pomoci prikazu find a rm odstranite z cache vsechny soubory, ktere
+maji last access date (podporuji to filesystemu UNIXu, windows a
+OS/2) vetsi nez vami preferovany pocet dnu. napr. find /var/cache
+-atime +XX -print | xargs rm -f</p>
+
+<p>Pote zavolate jedinou uklizeci proceduru, kterou cache zatim
+podporuje a tou je kill unreferenced files and empty directories,
+coz domaze pripadne nekonzistence, ktere po vasem uklidu vznikly.
+(java scache -killunref). Zda gnu find existuje i pod Windows to
+netusim, ale Xtree ci jiny inteligentni file manager to zvladne
+take.</p>
+
+<h3>Prakticke zkusenosti</h3>
+
+Jeden uzivatel, ktery to aplikoval na firemni LANku tvrdil, ze to
+podstatne zredukovalo zatizeni linky, zvlaste kdyz tam nastavil
+cache_all. To, ze se BFU divaji na X hodin Stary Seznam, pocitadla
+atd. a to je nezabije a lince to vyrazne pomuze. Lezlo mu pry
+znacne na nervy, kdyz se homepage Seznamu atd. tahala 60x za den.
+GC provadi findem v cronu, cache kvuli tomu nestopuje. Jednou za
+tyden provede -killunref. 
+
+<p>Dalsi pozitivni feedback: Cache se nasadi na notebook a pouziva
+jako nadrazeny proxy server vasi firemni cache. Pokud nekam
+odcestujete, tak urcite budete potrebovat vase firemni a mozna i
+nejake cizi stranky, na ktere se casto divate. Vzhledem k tomu, ze
+je mate v cache, muzete si je bez problemu prohlizet.</p>
+
+<h3>LICENCE</h3>
+
+Tento produkt je zdarma povoleno pouzivat pouze dial-up uzivatelum
+a to navic jen pro nekomercni ucely. Produkt neni mozno dale
+kopirovat, modifikovat, prodavat a tak podobne. Pokud ho chcete
+pouzivat pro pripojeni LAN site nebo pro komercni prostredi, tak si
+to kupte. Cena nebyla jeste stanovena a pevne doufam, ze se nenajde
+nikdo kdo to bude chtit koupit. Pocitejte tak s tisicovkou, coz se
+vzhledem k tomu, ze je opravdu o tridu lepsi nez interni cache
+Netscape, rozhodne vyplati. 
+
+<p>Homepage produktu je <a href=
+"http://ncic.netmag.cz/apps/nase/smartcache.html">zde</a>.</p>
+
+<p>Poznamka pro pripadne stouraly: O tomto produktu pisi tolik ne
+proto, ze je muj, ale proto, ze ho povazuji za velmi uzitecny pro
+dial-up uzivatele. Garbage collection pochopitelne casem (14 dni?)
+bude umet a to dokonce velmi dobrou (zavisejici na mnoha
+faktorech). Pouzitim tohoto produktu dosahnete toho, ze pan budete
+vy a ne vas browser. Netchipak ma opravdu cache mizernou.</p>
+
+<hr>
+</td>
+</tr>
+</table>
+</body>
+</html>

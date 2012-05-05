@@ -1,0 +1,325 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Návod pro instalaci a užívání Smartcache pro normální uživatele (bfu)</TITLE>
+</HEAD>
+<BODY>
+
+<FONT FACE="Times New Roman" SIZE=6><P>Návod pro instalaci a užívání Smartcache pro normální uživatele (bfu)</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Tento návod vznikl proto, aby žádný další uživatel pc a internetu se nemusel trápit jako já a také proto, že tento produkt opravdu stojí za to. Ještě k tomu bfu. K označení bfu se také hlásím, protože za to, že windows jsou tak rozšířeny já nemohu a také proto, že kdosi na serveru netmag napsal, že všechny bfu nejsou blbci. Tak kolegové dotoho.</P>
+<P>Nejsem žádný zvláštní odborník a tak popis ukazuje jak jsem postupoval a jak mi to funguje.</P>
+<P>Můj systém je: pc, win 95cz, netscape 4,05 angl. verze (msie 4cz se mi kousal a vždy vzal s sebou i win, netscape se nekouše)</P>
+<P>Návod se skládá ze tří částí:</P>
+<P>Část I. obsahuje popis základních činností potřebných k instalaci a používání Smartcache</P>
+<P>Část II. obsahuje další možnosti v instalaci a nastavení.</P>
+<P>Část III. obsahuje studijní materiál (zatím e-maily, pomocí kterých mi autor programu umožnil Smartcache rozběhnout a napsat tento návod)</P>
+<U><P>T.zn. pro rozběhnutí a základní užívání stačí přečíst část I.</P>
+</U><P>Tento návod bude průběžně doplňován. Velmi uvítám všechny další zkušenosti z instalce a užívání Smartcache.Bude zachován princip  srozumitelnosti pro běžné uživatele, zejména v I.části návodu.</P>
+<P>Většina  popsaných postupů vznikla </FONT><FONT SIZE=2>za veliké pomoci autora programu.</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Jiří Bartoň</P>
+</FONT><FONT SIZE=2><P>xbarton@post.cz</P>
+<P>&nbsp;</P>
+</FONT><FONT FACE="Times New Roman" SIZE=4><P>I. část</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>1. Stažení sw</P>
+<P>Je třeba stahnout jre, viz odkaz na home page smart cache.</P>
+<P>V době, kdy jsem jej stahoval já, resp. můj provider se soubor jmenoval </P>
+<P>  jre116-win32.exe  a měl přibližně 6MB. </P>
+<P>jre znamená java runtime environment, t.j. prostředí pro spouštění javovských programů.(laicky řečeno).</P>
+</FONT><FONT SIZE=2><P>116 znamená verzi 1.16</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>win32 znamená, že je to pro 32bitove windows (t.j. 95)                    </P>
+<P> Pokud to jde pomalu, je možné se dohodnout (většinou) s vašim providerem, že to stahnou např. v noci na svůj ftp server a pak si to stahnete rychleji na svůj pc. Bohužel na ftp firmy u které se připojuji to není v pořádku. Jak bude, uvedu zde zdroj.</P>
+<P>Pak stáhněte vlastní smartcache, viz. odkaz na konci home page.</P>
+</FONT><FONT SIZE=2><P>2. Instalace</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Nejdříve nainstalujte jre (java runtime environment). Nabídka start, spustit a procházením naklikejte výše zmíněný soubor jre116.......exe a OK. Začne instalace a se vším souhlaste. I s instalací jakéhosi winsock 2. Také se to zeptá na select components, dejte next. Zeptá se to na souhlas s umístěním do složky Program Files, souhlaste. Pak restart a je to hotovo.</P>
+</FONT><FONT SIZE=2><P>Instalace smartcache:</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Protože platí doporučení, že v hlavním adresáři by toho mělo být málo (téměř nic) tak jsem si pro programové soubory (programy), které nejsou přímo pro w95 a nenabízejí instalaci přímo do ProgramFiles vytvořil složku Programy. V ní jsem vytvořil složku scache. Do ní jsem pomocí Winzip rozbalil stažený soubor scache.zip. ( c:\programy\scache )</P>
+<P>Nyní je třeba vytvořit adresář, kam se budou ukládat natahané soubory ( natahané www stránky). V hlavním adresáři vytvořte složku store ( c:\store )</P>
+<P>Teď se podíváme do složky, kde je smartcache rozbaleno (c:\programy\scache ) a tam najdeme soubor scache.cnf a klikneme na něj pravým tlačítkem. V rozbaleném menu dáme otevřít a spustí se pozn. blok a můžeme si číst co tam je. Klid, já sám rozumím tak 10 procentům. Najdeme následující odstavec</P>
+</FONT><FONT SIZE=2><P># *** storage setup ***</P>
+<P>#directory for storing cached objects. Use the shortest path possible</P>
+<P>#and don't end directory name with \ or /</P>
+<P>Cache_dir d:\store</P>
+<P>a opravíme to d na c tak, aby to vypadalo takto</P>
+<P>Cache_dir c:\store</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Nyní spustíme Netscape a roletě Edit klikneme na preferences. Kikneme na + u Advanced a klikneme na Proxies. Klikneme na puntik u manual proxy configuration a pak View. Do řádky HTTP napíšeme</P>
+</FONT><FONT SIZE=2><P>127.0.0.1</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>a do sloupečku port do stejné řádky </P>
+</FONT><FONT SIZE=2><P>8080</P>
+<P>Následuje OK a klikneme na Cache. Tam na Disk cache dáme 0.</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Dáme OK a netscape zavřeme.</P>
+<P>Nyní otevřeme Poznámkový blok ( Notepad) a opíšeme přesně následující řádek (např. přes clipboard)</P>
+</FONT><FONT SIZE=2><P>jre -cp . -ms1m scache</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Dáme uložit jako, zvolíme všechny soubory a soubor nazveme scache.bat a uložíme jej do složky </P>
+<P>c:\programy\scache ( tedy tam co je smartcache nainstalována) a OK. Zkontrolujeme, je-li soubor scache.bat opravdu v uvedené složce a můžeme pravým tlačítkem a upravit zkontrolovat, zda-li je tam ta řádka napsána.</P>
+<P>Pak na ploše vytvoříme zástupce uvedenému spouštěcímu bat souboru. Pravé tlačítko na ploše, vybrat nový objekt, zástupce, procházet a najít soubor scache.bat, další, upravit si název dle svého, (např. SmartCache) , vybrat si ikonu a dokončit a na ploše je ikona. Teď pravým tlačítkem na tuto ikonu a klik na ouško program a tam by mělo být v řádce Příkazový řádek</P>
+</FONT><FONT SIZE=2><P> C:\PROGRAMY\SCACHE\SCACHE.BAT</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>a řádce pracovní adresář</P>
+</FONT><FONT SIZE=2><P>C:\PROGRAMY\SCACHE</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Dále zatrhneme zatržítko Při skončení zavřít a je to vše.</P>
+<P>3. Spuštění</P>
+<P>3.1 První spuštění.</P>
+<P>Spusťte modem, spust'te netscape a pak poklepáním na ikonu i smartcache a normálně surfujte a mělo by to jet. V okně smartcache by se mělo psát new object .......</P>
+<P>3.2 Další spouštění.</P>
+<P>Poklepu na ikonu smartcache, pak na ikonu netscape a mohu surfovat po strankách z předchozích surfování. Pak když je třeba spustím modem a surfuji i jinde.</P>
+<P>4. Běžný provoz</P>
+<P>Při surfování ihned uvidíte rozdíl v tom, že při povelu zpět přijede www stránka rychleji zpět a to i dynamicky tvořené, kvůli kterým toto vše děláme.</P>
+<P>Teď to, co se mi líbí nejvíce. Jste na stránce s odkazy. Najedete na odkaz, kliknete a jak se dole (v netscapu ) objeví Waiting for reply..... zmačkněte klávesu escape. Na monitoru se nic dít nebude, ale to co bylo pod tím odkazem se bez obrázků natahne do vašeho pc. Takto můžete naklikat více odkazů, vypnout modem (resp. odpojit se od sítě) a znovu na tyto odkazy kliknout a oni přijedou , ale už z vašeho disku. Toto mě uchvátilo ze všeho nejvíce. Odhadl jsem, že když surfuji po známých serverech, tak za 5 min. (jeden impuls po 19. hodině) naklikám tak na 25 minut čtení.</P>
+</FONT><FONT SIZE=2><P>5. Korektní vypnutí</P>
+<P>Surfujeme-li on line( b</FONT><FONT FACE="Times New Roman" SIZE=2>ěží modem) modem můžeme vypnout (odpojit)  kdykoliv a následně surfovat off line, viz. výše. Pak normálně ukončíme netscape (křížek v rohu) a pak zaktivníme okno s spuštěným smartcache (kliknutím na hlavním panelu) a dáme ctrl-c a tím je vše vypnuto.</P>
+<P>6. Údržba adresáře store</P>
+<P>Tento odstavec bude doplněn až to prakticky vyzkouším.</P>
+<P>7. Jediný mě známý problém (lehce řešitelný)</P>
+<P>Pokud instalaci provedete dle výše uvedeného návodu, tak přijdete na následující věc. Najedete  na www stránku, kde se nachází např. nějaké hlasování apod. Když se rozhodnete hlasovat, tak vám to  SmartCache nedovolí (objeví se bílá stránka s textem, už nevím jakým). Dle autora SmartCache existují tři řešení. Vyzkoušel jsem první dva.</P>
+</FONT><FONT SIZE=2><P>7.1</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Restart SmarCache. Když budete potřebovat např. hlasovat, tak předtím restartujte Smartcache. T.zn. můžete mít spuštěný netscape, smartcache i modem. Aktivujte okno smartcache, dejte ctrl-c a v zápětí poklepejte na ikonu smartcache a tím ji znovu spusťte. A může se dát např. hlasovat.</P>
+</FONT><FONT SIZE=2><P>7.2</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Použití proxy ser</FONT><FONT SIZE=2>veru providera, dle autora smartcache nejlepší rešení.</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Nejdříve zjistěte, provozuje-li ten, kdo vás připojuje k internetu proxy server. Pokud ano, zjistěte si IP adresu tohoto serveru. Pokud provider píše jen jméno DNS (např. proxy.czcom.cz) tak mu pošlete e-mail s dotazem na IP adresu jeho proxy serveru a číslo portu.   Pak otevřte soubor scache.cnf najděte odstavec s textem parent proxy.......</P>
+<P>Zde najdete řádek ¤http_proxy.......Odstraníte první znak tak, aby řádek začínal</P>
+</FONT><FONT SIZE=2><P>http_proxy a sem doplníte IP adr</FONT><FONT FACE="Times New Roman" SIZE=2>esu proxy serveru providera a následuje číslo portu. Uložit a zavřít. Toto nastavení používám k plné spokojenosti.</P>
+</FONT><FONT SIZE=2><P>7.3</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Použití přepínače - faststart. Toto jsem zatím nevyzkoušel. Doporučení autora programu - nepoužívat.</P>
+</FONT><FONT SIZE=2><P>7.X</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>Shrnutí části 7</P>
+<P>Můžete-li použít proxy serveru providera, použít. Nemá-li váš provider proxy server, restartujte SmartCache okamžitě po připojení do internetu. Sdělení autora programu - některá z dalších verzí SmartCache tento problém vyřeší.</P>
+</FONT><FONT FACE="Times New Roman" SIZE=4><P>II. část</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>3.3 Spouštění netscape a Smartcache najednou, pomocí poklepání na jednu ikonu. Tento návod vytvořil pan V.Železný a předpokládám, že mu nevadí jeho uveřejnění. Protože jsem  neměl čas na jeho otestování, uvádím jej tak, jak jsem jej formou e-mailu obdržel. Pokud tedy bude někým úspěšně vyzkoušen, napište mi, zkušenost zveřejním. </P>
+</FONT><FONT SIZE=2><P>   Date:        Sun, 30 Aug 1998 01:30:40 PDT</P>
+<P>   From:        "Vladimir Zelezny" &lt;vladimir_zelezny@hotmail.com&gt;</P>
+<P>     To:        xbarton@post.cz</P>
+<P>zdravim</P>
+<P>tak jsem si nainstaloval jre misto jdk a vykoumal:</P>
+<P>do adresare c:\programy\scache , kde mate i scache.classes si udelejte </P>
+<P>shortcut k jre.exe !!! (staci jakoby pretahnout jre.exe z adreasare </P>
+<P>c:\program files\jre\1.1 atd. ono to ve skutecnosti nepretahne, ale </P>
+<P>udela to shortcut). toto je fakt dulezite !</P>
+<P>potom udelat scache.bat:</P>
+<P>c:\progra~1\Netscape\Commun~1\Program\netscape.exe</P>
+<P>jre -ms1m -cp c:\programy\scache scache -faststart</P>
+<P>(u jre se nenastavuje set classpath)</P>
+<P>potom klik pravou mysi na scache.bat - properties\program a zmenit ikonu </P>
+<P>- OK. </P>
+<P>udela to samo shortcut na scache.bat s novou ikonou v tomto adresari. </P>
+<P>ten si pak pretahnete na plochu , klik pravou mysi ,  jako pracovni </P>
+<P>adresar nastavit c:\programy\scache. a je to.</P>
+<P>kdyz to udelate presne takhle, tak to musi fungovat, protoze me to </P>
+<P>funguje (vysledek:nastartuje se netscape zaroven s scache)</P>
+<P>VZ</P>
+</FONT><FONT FACE="Times New Roman" SIZE=4><P>III. část</P>
+</FONT><FONT SIZE=2><P>Subject:        Re: scache</P>
+<P>   Date:         Sun, 26 Jul 98 20:31:13 +0200</P>
+<P>&gt;Spusteni scache, resp. porozumet spusteni javovskych programu obecne se</P>
+<P>&gt;pro mne stava pomalu preztizni zalezitosti. Zvolna louskam Tutorial z</P>
+<P>&gt;java.sun.com ale o spusteni programu ani slovo.</P>
+<P>Vzdyt vam tu uz funguje, stahnete si novejsi scache.zip,</P>
+<P>z cache.cnf vyhodte radek</P>
+<P>zacinajici jre - asi omylem se vam tam dostal, i kdyz to nevadi.</P>
+<P>Ted si v browseru nastavte adresu proxy serveru na 127.0.0.1 a port 8080</P>
+<P>a muzete ject...</P>
+<P>&gt;Pro dnesek otazka, jak to korektne vypnu?</P>
+<P>vyvorit soubor s libovolnym obsahem a jmenem, ktere je uvedeno v shutdownflag</P>
+<P>direktive v scache.cnf. Kdyz zmacknete CTRL-C tak se neulozi soubory nacachovane</P>
+<P>za posledni 3 minuty, pote co shodite dial-up muzete klidne dal offline brouzdat a potom CTRL-C</P>
+<P>zmacknout. Nevadi to.</P>
+<P>&gt;Pokud napisete vice, treba nejake nastavovacky, tim lepe.</P>
+<P>Default je tam ta konfigurace co pouzivam ja a vyhovuje mne to.</P>
+<P>Jeste si nastavte browser a uz jste vyhral...</P>
+<P>&nbsp;</P>
+<P>Subject:        Re: maka to</P>
+<P>   Date:         Thu, 30 Jul 98 22:31:29 +0200</P>
+<P>&gt;Dobry den,</P>
+<P>&gt;smart cache maka a je to bomba. </P>
+<P>Hmm. Ze bych z toho udelal shareware, mozna by za to nejakej cvok zaplatil.</P>
+<P>Zajimave je, ze ty lidi, co to pouzivaji pro celou sit za to nejsou ochotni platit.</P>
+<P>&gt;Dotaz:</P>
+<P>&gt;1/Jak vlastne pouziju ten indikacni soubor pro zastaveni. </P>
+<P>otevrit prikazovy radek a napsat: </P>
+<P>echo &gt; c:\stopcache</P>
+<P>kde c:\stopcache je jmeno toho indikacniho souboru.</P>
+<P>Pokud se po jeho vytvoreni nevyskytne za 3-6 minut zadna transakce pres scache,</P>
+<P>tak se cache zastavi. Jinak pochopitelne pocka az ji nebude tech par minut nikdo pouzivat.</P>
+<P>&gt;2/ Ted netscape. Je fakt, ze to sem nepatri, ale vice se na nej nebudu</P>
+<P>Ja ty linky nevybiram z historie ale z bookmarku, popripadne je tam (treba netmag.cz)</P>
+<P>pisu na tu URL linku. Jak tam premyslim, nikdy jsem historii v Netscape nepouzival. Muzete</P>
+<P>zkusit jiny prohlizec...</P>
+<P>&nbsp;</P>
+<P>Subject:        Re: dotaz-scache</P>
+<P>   Date:         Mon, 03 Aug 98 11:13:11 +0200</P>
+<P>&gt;Neni mi jasny ten shutdown flag.</P>
+<P>tak si s tim nelamte hlavu. CTRL-C postaci, pokud pockate az scache oznami</P>
+<P>0 dirs saved a nepolezou pres ni zadne nove pozadavky.</P>
+<P>&gt;Ted popisu cinnost pri dial up browsingu, tak jak jsem ji pochopil z</P>
+<P>&gt;vasich www stranek:</P>
+<P>&gt;Spustim browser, Smartcache</FONT><FONT FACE="Times New Roman" SIZE=2> a modem a připojim se k isp. Naklikam</P>
+</FONT><FONT SIZE=2><P>&gt;spoustu (nekolik ) odkazu. Prestanu klikat a scache dotaha prislusne</P>
+<P>&gt;stranky na pc. Nekdy predtim jsem vytvoril indikacni soubor. Ve chvili</P>
+<P>&gt;kdy jsou vsechny odkazy dotahany, scache se vypne a ja mohu vypnout</P>
+<P>&gt;modem a surfovat off line</P>
+<P>V zasade ano, ale mnohem lepsi je sem tam mrknout na kontrolky na modemu</P>
+<P>a pokud nejakou tu dobu neblikaji, tak ho vypnout. Je to rychlejsi.</P>
+<P>pro offline surfing musi scache pochopitelne bezet. Jak by mohla posilat</P>
+<P>data browseru, kdy by nebezela?</P>
+<P>&gt;A ted dotazy:</P>
+<P>&gt;- Jak se provadi to naklikani odkazu (presne). </P>
+<P>Presne receno, pokud netscape ohlasi host XXX contacted, waiting for reply... Tak uz muzete</P>
+<P>zmacknout stop a stranka se dotahne (obrazky pochopitelne ne, protoze se jeste nezacaly tahat).</P>
+<P>&gt;Mam pocit, ze kdyz kliknu na odkaz a dam stop drive nez neco prijede v scache nic neni, resp. pri</P>
+<P>&gt;off line browsingu se natahne neuplna stranka. </P>
+<P>to je tim, ze netscape si ulozi do sve cache i neuplnou stranku, staci ho restartovat, nebo dat</P>
+<P>reload - natahne to stranku z cache, ktera se jiz uz dotahla cela.</P>
+<P>&gt;Zminujete se ze se to da</P>
+<P>&gt;nastavit v scache.cnf. Ktery radek, jak nastavit.</P>
+<P>dotahavani ovlivnuje directiva quick_abort. pokud je na -1 dotahava vse, jinak ty cisla</P>
+<P>urcuji dotahavat pouze pokud zvyva XX procent ci XXX bajtu do konce souboru.</P>
+<P>&gt;- Pri off line browsingu musi scache bezet, resp. to okno ve kterem</P>
+<P>&gt;bezela je stale otevreno? Jinak receno. Udelal jsem batak, kterym scache</P>
+<P>&gt;spoustim a v shortcutu nastavil zavreni okna po ukonceni. Kdyz dam</P>
+<P>&gt;ctrl-c tak se okno s scache zavre. Jinak receno je zastaveni pomoci</P>
+<P>&gt;ctrl-c stejne jako s indik. souborem? Tedy scache muze byt zastaveno a</P>
+<P>&gt;okno otevreno?</P>
+<P>mate v tom zmatek, Vzijte se do situace, kdy mate OS UNIX co nema zadne GUI.</P>
+<P>Proces budto bezi nebo ne. Kdyz scache stopnete CTRL-C nebo flagem tak</P>
+<P>nebezi a to bez ohledu na nejaka otevrena okna. Pokud scache bezi telnet 127.0.0.1 8080 se vam</P>
+<P>povede, jinak ne (conn refused).</P>
+<P>Pokud mate scache vypnutou, tak si vlastne offline prohlizite cache prohlizece. Scache modifikuje</P>
+<P>hlavicky (generate_lastmod 1) a tak zpusobi, ze se do cache prohlizece ukladaji i ty objekty, </P>
+<P>ktere by tam puvodne neulozil. </P>
+<P>Vidite napadlo mne dalsi pouziti scache. Staci dat do konfiguracniho souboru</P>
+<P>nocaching * a vsechny objekty co pres ni projedou skonci jen v cache browseru. Jinak skonci pochopitelne v obou. Proto se nastavuje diskcache browseru na minimalni velikost, nebo se zakazuje. Ja ji mam zakazanou, protoze jsem zjistil, ze je to tak rychlejsi.</P>
+<P>Netscape Memory cache je ale dobre nechat tak minimalne na 1000K.</P>
+<P>&nbsp;</P>
+<P>Subject:        Re: scache</P>
+<P>   Date:         Fri, 14 Aug 98 11:45:26 +0200</P>
+<P>Co to jsou ty dirs? Co to jsou ty garbage? </P>
+<P>SCache je tzv. CERN directory-based . V kazdem adresari je soubor .cacheinfo, ktery obsahuje rici udaje pro cache. Kdyz se poprve k tomuto adresari pristoupi, cache si tento soubor nacte a ulozi do pameti. Pokud se k tomuto adresari pristupuje, ukladaji se zmeny (nove objekty, pristupy) jen do pameti</P>
+<P>a nikoliv i na disk. Pokud ji stopnete pomoci CTRL-C, kdyz ma sice objekt ulozen na disku,  ale</P>
+<P>.cacheinfo porad  jeste v pameti, objekt se po restartu cache nenajde a pri udrzbe se smaze.</P>
+<P>Pokud se pristupuje k objektum offline, tak jedina vec, co se u nich meni je LRU, coz</P>
+<P>je nepodstatne, takze v tom pripade ze mozne CTRL-C mackat kdykoliv.</P>
+<P>Proto se musi cas od casu obsah teto pameti ulozit na disk.</P>
+<P>Kazde 3 minuty se uklada obsah teto pameti na disk (x dirs saved). Az je ulozen, nastavi se mu priznak,</P>
+<P>ze je vhodny pro smazani. Pokud se s adresarem vice nez 3 minuty nepracuje, je z pameti</P>
+<P>vymazan (garbage collected).</P>
+<P>&gt;Jak jsem vyrozumel tak ty garbage by tam byt nemely </P>
+<P>ne to je naprosto normalni.</P>
+<P>&gt;Aby bylo vypnuti modemu "korektni" musim cekat na 0 dirs saved?</P>
+<P>Ne. Modem si muzete vypnout kdykoliv. Pochopitelne, ze ty objekty co se tahaji se nedotahnou a pokud nechate scache bezet dal tak ji spojeni spadne na timeout a nedotahane objekty sama smaze. Vypnuti modemu nema na integritu dat zadny vliv.</P>
+<P>&nbsp;</P>
+<P>Subject:        Re: scache</P>
+<P>   Date:         Sun, 16 Aug 98 23:55:40 +0200</P>
+</FONT><FONT FACE="Times New Roman" SIZE=2><P>&gt;jima hruza a předem to vzdavam. Vlastne ani snad se uz nechci nic</P>
+</FONT><FONT SIZE=2><P>&gt;dovedet,ale pozadat vas o doprogramovani tohot prikazu v treba v jave</P>
+<P>&gt;aby se vyuzilo uz nainstalovaneho jdk(jre), nebo jeste lepe, do</P>
+<P>&gt;scache.cnf dat radek, ze data schovavt napr. 3dny.</P>
+<P>od v 0.30 to umi, si prectete gc.cnf, poeditujte a </P>
+<P>java scache -gc </P>
+<P>smaze stara data.</P>
+<P>&gt;Dnes jsem se take chtel prihlasit na home page jako uzivatel. Vyplnil</P>
+<P>&gt;jsem e-mail adresu, zmackl Watch it, ale odpovedela mi scache, ze tedy</P>
+<P>&gt;ne. Takze si n</FONT><FONT FACE="Times New Roman" SIZE=2>ejsem vůbec jisty, zda-li jsem prihlasen, ci ne.</P>
+</FONT><FONT SIZE=2><P>pochopitelne ze ne. Jednoducha rada - spuste scache az kdyz si nazhavite modem na inet,</P>
+<P>nebo pouzijte parent proxy zadanou pomoci IP adresy nebo pouzijte prepinac</P>
+<P>-faststart. Souvisi to s chybou Javy 1.1. Asi o tom napisu clanek do NM.</P>
+<P>&gt;Navod pro ostatni neznalce (bfu) napisu, ale jeste musim vyzkoumat, jak</P>
+<P>&gt;to udelat, aby to bezpecne jelo, kdyz cely obsah cacheroot proste smazu.</P>
+<P>&gt;Zatim kdyz to udelam, tak to jede,ale stranku v home to nenacte a</P>
+<P>&gt;nektere dalsi take ne. Nepripada vam to jako przneni programu? </P>
+<P>Kdyz ji celou smazete, tak je to pochopitelne vase blbost stejne jako</P>
+<P>format c:, to data smaze a nikdo to za chybu Windows nepovazuje. </P>
+<P>Pri restartu si ten adresar vytvori znova. Odkud by mela</P>
+<P>asi tak ty data brat? Ty data co vidite, jsou ty co mate v cache browseru,</P>
+<P>pokud jste offline, tak scache posila kod 304 i kdyz ty data v sobe ulozene nema,</P>
+<P>coz zpusobi ze je browser zobrazi,  pokud je ma ve sve cache.</P>
+<P>&nbsp;</P>
+<P>Subject:        scache po stoprvni</P>
+<P>   Date:         Sat, 22 Aug 98 14:49:28 +0200</P>
+<P>&gt;Nerozumim tomu, co jste mi radil v posledni zprave. Zopakuju problem.</P>
+<P>Ja tento problem znam. Je to tim, ze pise cache Host Uknown.</P>
+<P>Polopaticke vysvetleni cim je tento problem zpusoben (mozno zahrnout</P>
+<P>do navodu), mozna to vysveleni na ten shutdownflag by se tam hodilo</P>
+<P>dat take , porad se na to nekdo pta a vsem rikam at si s tim nelamou</P>
+<P>hlavu a mackaji CTRL-C.</P>
+<P>&nbsp;</P>
+<P>JVM (Java Virtual Machine) si udrzuje interni cache pro DNS zadosti.</P>
+<P>pokud klient chce napr. adresu stroje netmag.cz, JVM se podiva do sve</P>
+<P>interni cache, zda tam tento zaznam je, pokud tak je pouzije jej, pokud</P>
+<P>ne, zjisti ho z DNS serveru. V beznem prostredi (LL na Inet) to nepusobi</P>
+<P>zadne problemy. Problem je, kdyz mate inet pres dial-up. Kdyz scache</P>
+<P>startuje pta se na DNS zaznam watchit.netmag.cz, aby prekontrolovala svou</P>
+<P>posledni verzi a pripadne stahla novy adBusters ruleset. Kdyz scache</P>
+<P>spustite bez pripojeni k internetu je jasne, ze  OS odpovi na vsechny zadosti</P>
+<P>o DNS jmena tak, ze neexistuji a JVM si to ulozi do sve cache. Kdyz pak</P>
+<P>pripadne nahodite modem a budete chtit nejakou adresu, ktera je jiz v</P>
+<P>cache JVM oznacena jako neexistujici, scache vam z dane adresy zadny</P>
+<P>dokument neprenese. (pokud vam neco posle, tak to budou jen ty dokumenty,</P>
+<P>ktere ma v cache).</P>
+<P>a) prepinac -faststart zpusobi, ze se nebude scache ptat na DNS jmeno</P>
+<P>Watchit.netmag.cz pri svem startu. Coz je castecne reseni problemu</P>
+<P>s watch item.</P>
+<P>b) restartnuti scache kdyz nahodite modem zpusobi vymazani JVM DNS cache.</P>
+<P>c) pouziti proxy serveru providera, zadaneho pomoci IP adresy se mne ukazalo</P>
+<P>jako nejlepsi reseni.</P>
+<P>ja jako matlal z cesnetu pouzivam  cesneti cache, takze si tam dam tohle:</P>
+<P>http_proxy 194.50.6.6 3128</P>
+<P>od te doby nemusim restartovat scache kdyz nahodim modem. Mne se scache spousti</P>
+<P>hned pri startu systemu a tak se nemusim o ni jiz starat. Nevyhoda je v tom, ze kdyz</P>
+<P>cesnetu spadne jejich cache (obcas se to stava), tak si nestahnu z INetu ani bajt. Je proto</P>
+<P>nutne v konfiguraci tenhle radek zakomentovat a restartnout scache.</P>
+<P>&gt;Ted udrzba dat.</P>
+<P>&gt;Jak spustit? </P>
+<P>java scache -gc</P>
+<P>-nebo-</P>
+<P>jre -cp . scache -gc</P>
+<P>&gt;Ta udrzba bezi soucasne s scache </P>
+<P>je to nezavisly proces, muze (ale i nemusi) bezet soucasne s hlavnim. Na</P>
+<P>rozdil od scache to neni daemon, ale je to jednorazova akce. Po spusteni</P>
+<P>to provede udrzbu dat a skonci to.</P>
+<P>&gt;a to -gc je jen jakysi parametr se kterym scache spoustim?</P>
+<P>presne tak</P>
+<P>&gt;Kdyz v cg.cnf nastavim cache_size 10, tak po dosazeni 10 MB se budou</P>
+<P>&gt;nejstarsi objekty odmazavat a adresar cache root se nebude zvetsovat?</P>
+<P>ne. Automaticky se nebude nikdy nic odmazavat. Scache (hlavni) vubec</P>
+<P>se souborem gc.cnf nepracuje - takze uklada porad nove soubory na disk</P>
+<P>bez ohledu na nastavenou velikost.</P>
+<P>Spoubor gc.cnf pouziva GC proces, ktery po spusteni naindexuje</P>
+<P>celou cache (coz chvili trva 100MB cache se indexuje na 386/40 asi pul hodiny),</P>
+<P>u kazdeho objektu spocita hodnotu, jak moc je dobry kandidat pro GC, </P>
+<P>potom objekty setridi podle teto hodnoty a zacne mazat do te doby, nez se dosahne potrebna velikost.</P>
+<P>Hodnotu ovlivnuji ruzne direktivy v GC.cnf, napriklad je mozne to nastavit aby se vetsi soubory mazali drive nez mensi, atd.</P>
+<P>&nbsp;</P>
+<P>Subject: dalsi dotaz</P>
+<P>   Date:         Thu, 27 Aug 98 13:10:10 +0200</P>
+<P>&gt; Je ovsem zajimave, ze ja</P>
+<P>&gt;nejdrive spoustim scache, pak netscape a pak modem. Vse funguje bez</P>
+<P>&gt;problemu do doby kdy chci odeslat neco z web stranky.</P>
+<P>to nema specificky s odesilanim dat nic spolecneho. Pokud</P>
+<P>ten problem nastane, tak netaha zadne stranky z daneho serveru</P>
+<P>ani kdyz je pripojena k internetu.</P>
+<P>Ty, co vypadaji ze funguji se posilaji z cache.</P>
+<P>&gt;Ovsem te udrzbe stale moc nerozumim.</P>
+<P>&gt;Mohu scache spoustet s parametrem -gc pokazde?</P>
+<P>Kdyz se scache spousti s parameterm -gc tak nefunguje jako proxy cache,</P>
+<P>ale jako uklizec dat. -gc neni neco NAVIC k proxy cache ale</P>
+<P>neco JINEHO. Muzete to povazovat pro jednoduchost za uplne jiny program.</P>
+<P>&gt;Ono to tedy naindexuje celou cache, dle vasich slov vybere kandidaty pro</P>
+<P>&gt;gc (je to garbage colletion? jestize ano budu na sebe nezrizene hrdy) a</P>
+<P>&gt;pak se musi pouzit to killunref?</P>
+<P>GC je pochopitelne i hned smaze na pozadovanou velikost.</P>
+<P>Killunref se uz pouzivat nemusi. Byla to jakasi drivejsi kontrola integrity cache. Operace -gc</P>
+<P>zahrnuje jiz i tuto akci a neni ji tedy nutne pouzivat samostatne.</P>
+<P>&gt;Pokud jsem to napsal spravne tak prosim presnou syntaxi povelu</P>
+<P>&gt;jre ..........</P>
+<P>java scache -gc</P>
+<P>-nebo-</P>
+<P>jre -cp . scache -gc</P>
+<P>&gt;a pak kdyz zmenim cache size na 10 tak to obsah zmensi na 10MB?</P>
+<P>ano. Vyzkousejte si to a uvidite co to dela. Krome toho 10 MB na cache je velmi malo,</P>
+<P>jako rozumne minimum bych doporucil alespon 25. Pochopitelne ze cim vice tim lepe</P>
+<P>Ja osobne mam  na disku vsechny stranky za posledni 3 mesice a gc spoustim tak jednou za 14 dni.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P></FONT></BODY>
+</HTML>

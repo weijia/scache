@@ -1,0 +1,6 @@
+usr/bin
+etc/init.d
+etc/cron.weekly
+etc/cron.daily
+usr/share/doc-base
+etc/scache

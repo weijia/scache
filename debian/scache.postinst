@@ -1,0 +1,78 @@
+#! /bin/sh
+set -e
+. /usr/share/debconf/confmodule
+PKGNAME=scache
+CONFIGFILE=/etc/scache/scache.cnf
+GCCONFIGFILE=/etc/scache/gc.cnf
+PKGDIR=/usr/share/doc/$PKGNAME/
+
+if [ "$1" = "configure" ]; then
+    db_get scache/usedebconf
+    if [ $RET = true ]; then
+       db_get scache/offlineuse
+       OFFLINE=$RET
+       #generate config files
+       echo -e "#THIS FILE IS NOW FULLY MANAGED BY DEBCONF\n#DO NOT EDIT, YOUR CHANGES WILL BE LOST ON UPGRADE\n#IF YOU WANT TO CONFIGURE IT YOURSELF RUN dpkg-reconfigure $PKGNAME" > $CONFIGFILE
+       db_get scache/port
+       echo -e "port $RET\nBindAddress 127.0.0.1\n" >> $CONFIGFILE
+       db_get scache/uiport
+       echo -e "ui_port $RET\nui_bindaddress 127.0.0.1\n" >>  $CONFIGFILE
+       echo "access_log * /var/log/scache.log" >> $CONFIGFILE
+       echo "stat_log /var/log/scache-stats.log" >> $CONFIGFILE
+       echo "cacheroot /var/cache/scache" >> $CONFIGFILE
+       echo -e "allowconnect 443\nallow_cookies_to_file cookies.cnf\nfail_file fail.cnf\npass_file pass.cnf\nregex_fail_file rfail.cnf\nredirect_file redir.cnf\nrewrite_file rewrite.cnf" >> $CONFIGFILE
+       echo "allow_all_session_cookies true" >> $CONFIGFILE
+       db_get scache/parentproxy
+       if [ ! "$RET" = "none" ]; then
+         echo  "http_proxy $RET" >> $CONFIGFILE
+       fi
+       echo "immediate_shutdown_flag /var/run/scache.stop" >> $CONFIGFILE
+       echo "flag_check_interval 15" >> $CONFIGFILE
+       echo "loglevel 0" >> $CONFIGFILE
+       if [ $OFFLINE = true ]; then
+           echo -e "#tuned for offline use\npragma_no_cache 1" >> $CONFIGFILE
+       else
+           echo -e "#tuned for online use\npragma_no_cache 3" >> $CONFIGFILE
+       fi
+
+       #generate GC CNF
+       echo -e "#THIS FILE IS NOW FULLY MANAGED BY DEBCONF\n#DO NOT EDIT, YOUR CHANGES WILL BE LOST ON UPGRADE\n#IF YOU WANT TO CONFIGURE IT YOURSELF RUN dpkg-reconfigure $PKGNAME" > $GCCONFIGFILE
+       db_get scache/cachesize
+       echo "cache_size $RET" >> $GCCONFIGFILE
+       echo "gcloglevel 2" >>    $GCCONFIGFILE
+       echo "gcarraysize 6000" >>    $GCCONFIGFILE
+       if [ $OFFLINE = true ]; then
+         #tweak for offline use
+	 echo "#Tweaking for offline use" >> $GCCONFIGFILE
+         echo "expired_penalty *1" >> $GCCONFIGFILE
+	 echo "expired_but_checkable_penalty *1" >> $GCCONFIGFILE
+	 echo "reference_age 99999">> $GCCONFIGFILE
+       else
+	 echo "#Tweaking for online use"  >> $GCCONFIGFILE
+         echo "not_checkable_penalty *20" >> $GCCONFIGFILE
+       fi
+
+       #copy fail.cnf pass.cnf rfail.cnf cookies.cnf
+       for FILE in fail.cnf pass.cnf cookies.cnf rfail.cnf redir.cnf rewrite.cnf; do
+          if [ ! -e /etc/scache/$FILE ]; then
+	     cp -f $PKGDIR/examples/$FILE* /etc/scache
+	     gzip -d -f -q /etc/scache/*
+	  fi
+       done
+    else
+       #config managed by admin
+       if grep -s DEBCONF $CONFIGFILE > /dev/null; then
+           rm -f $CONFIGFILE $GCCONFIGFILE
+       fi
+       for FILE in scache.cnf gc.cnf fail.cnf pass.cnf cookies.cnf rfail.cnf redir.cnf rewrite.cnf; do
+          if [ ! -e /etc/scache/$FILE ]; then
+	     cp -f $PKGDIR/examples/$FILE* /etc/scache
+	  fi
+       done
+       gzip -d -f -q /etc/scache/*
+    fi
+fi
+
+db_stop
+
+#DEBHELPER#

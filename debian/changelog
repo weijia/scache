@@ -1,0 +1,93 @@
+scache (0.94) hardy; urgency=low
+
+  * new upstream
+
+ -- Radim Kolar <hsn@ubuntu>  Fri, 29 May 2009 19:29:04 +0200
+
+scache (0.90) stable; urgency=low
+
+  *  new upstream
+
+ -- Radim Kolar <hsn@home>  Sat, 25 Oct 2003 13:00:52 +0200
+
+scache (0.89) stable; urgency=low
+
+  * new upstream
+
+ -- Radim Kolar <hsn@home>  Mon,  1 Sep 2003 18:56:07 +0200
+
+scache (0.88) stable; urgency=low
+
+  * new upstream
+
+ -- Radim Kolar <hsn@home>  Wed, 18 Jun 2003 18:44:25 +0200
+
+scache (0.86) stable; urgency=low
+
+  * do not purge if /usr/bin/smartcache exists
+  * when purging, delete logfiles also
+  * new logfile /var/log/scache-gc.log
+  * generated config files has bad filename for cookies.cnf
+
+ -- Radim Kolar <hsn@home>  Thu, 24 Apr 2003 11:52:58 +0200
+
+scache (0.85) stable; urgency=low
+
+  * new upstream bugfix version
+
+ -- Radim Kolar <hsn@home>  Sat, 22 Mar 2003 14:48:17 +0100
+
+scache (0.82) stable; urgency=low
+
+  * new upstream version
+
+ -- Radim Kolar <hsn@home>  Sun,  9 Feb 2003 16:36:31 +0100
+
+scache (0.80.1) stable; urgency=low
+
+  * new upstream bug fixed version
+
+ -- Radim Kolar <hsn@home>  Thu, 23 Jan 2003 18:58:18 +0100
+
+scache (0.80) stable; urgency=low
+
+  * new upstream version
+  * repository  for apt-get created
+
+ -- Radim Kolar <hsn@home>  Thu, 23 Jan 2003 18:57:50 +0100
+
+scache (0.78) stable; urgency=low
+
+  * gcj native packaging
+
+ -- Radim Kolar <hsn@home>  Sat, 23 Nov 2002 18:22:01 +0100
+
+scache (0.77) stable; urgency=low
+
+  * cache and configuration gets correctly purged
+  * debconf support
+  * logrotate support
+
+ -- Radim Kolar <hsn@home>  Mon, 11 Nov 2002 19:06:01 +0100
+
+scache (0.53) stable; urgency=low
+
+  * improved scripts and doc moved to usr/share/doc/
+
+ -- Radim Kolar <hsn@home>  Mon, 11 Nov 2002 19:05:30 +0100
+ 
+scache (0.42) unstable; urgency=low
+
+    * some fixes
+
+ -- Radim Kolar <hsn@home>  Thu,  9 Sep 1999 22:23:33 +0200
+
+scache (0.41) unstable; urgency=low
+
+   * Initial Release.
+
+ -- Radim Kolar <hsn@home>  Thu,  3 Jun 1999 18:44:09 +0200
+
+Local variables:
+mode: debian-changelog
+End:

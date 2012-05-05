@@ -1,0 +1,52 @@
+Template: scache/usedebconf
+Type: boolean
+Default: true
+Description: Manage Smart Cache configuration with debconf?
+ If you will choose YES, I will generate simple configuration file
+ with good starting values. This configuration do not allow other
+ computers to use Smart Cache; if you need this - select No and customise
+ access rules by hand. If you choose NO, I will copy sample
+ config files for you. 
+
+Template: scache/port
+Type: string
+Default: 8080
+Description: Select port for Smart Cache
+ Smart Cache runs defaults on port 8080, but it can run on any free
+ non-privileged port. Squid cache uses port number 3128. You need
+ to remember this port number and set your browser to use proxy
+ server 127.0.0.1 with this port number.
+
+Template: scache/uiport
+Type: string
+Default: 8081
+Description: Select port for Smart Cache's User interface
+ Smart Cache can optionally provide simple user interface for some
+ cache administration. If you do not need this, set 0 to disable it.
+
+Template: scache/parentproxy
+Type: string
+Default: none
+Description: IP address and port of your parent proxy cache
+ Smart Cache works best, when it is chained with another proxy cache.
+ This gives you FTP proxy support, which is not currently supported in
+ Smart Cache directly.
+ If your ISP has one, enter it here. Using IP address instead of
+ hostname is strongly recommended. Example: 1.2.3.4 3128
+
+Template: scache/cachesize
+Type: string
+Default: 150
+Description: Size of your cache (in MB)
+ Good starting point is 150 MB. I recommend to use diskspace which holds
+ at least one week of your average web traffic. If you can go to one month's
+ size, it is excellent. Remember that nowadays diskspace is cheap when compared
+ to bandwidth.
+
+Template: scache/offlineuse
+Type: boolean
+Default: true
+Description: Do you plan to use offline browsing?
+ Smart Cache works nicely even if you are not connected to Internet.
+ You can browse cached web pages as original servers. This question tunes
+ Smart Cache for specific type of operation.

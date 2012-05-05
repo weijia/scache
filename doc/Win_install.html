@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<meta name="GENERATOR" content="selfmade">
+<title>Instalace Smart Cache ve Windows</title>
+</head>
+<body bgcolor="White" text="Black">
+<h2>Instalace Smart cache do Win98, Explorer 5</h2><br>
+(Homepage programu: <a href="http://scache.sourceforge.net/">http://scache.sourceforge.net/</a> )<br>
+<br>
+<ul>
+<li>Stáhnout Smart Cache z výše uvedeného odkazu (momentální velikost verze 0.58 je 252338 bajtu).</li><br><br>
+<li>V adresáři "Program Files" vytvořit adresář "Smart Cache" a rozbalit do něj stažený soubor.</li><br><br>
+<li>Překopírovat všechny soubory z adresáře "Smart cache/samples" do adresáře "Smart Cache".</li><br><br>
+<li>Překopírovat 3 BAT soubory přiložené k tomuto návodu do adresáře "Smart Cache".</li><br><br>
+<li>Smart cache je napsaná v Javě, takže další věc je stáhnout si JRE (Java Runtime Environment) z níže uvedené adresy:<br>
+<a href="http://java.sun.com/products/jdk/1.1/jre/download-jre-windows.html">http://java.sun.com/products/jdk/1.1/jre/download-jre-windows.html</a><br><br>
+Dole na stránce pod nápisem "US English version of Java Runtime Environment" kliknout na Continue, objeví se licenční ujednání. Odsouhlasit a pak už si jenom vybrat buď stahování z FTP nebo HTTP.<br>
+Aktuální verze 18.11.2001<br>
+jre-1_1_8_008-win.exe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 764 736 bytes<br><br>
+Podotýkám že nejlepší je opravdu <b>stáhnout si verzi 1.1.8</b>, s verzí 1.2 a vyšší jsou problémy a je potřeba to stejně spouštět s parametry na přepnutí do "nižší" verze Javy, takže to vyjde nastejno... Lze to samozřejmě spustit i s pomocí JDK (Java Development Kit), ale pak je nutné upravit BAT soubory pro spouštění a navíc to je větší na stahování...</li><br><br>
+<li>Nainstalovat stažené JRE.</li><br><br>
+<li>Spustit Internet Explorer, Nástroje, Možnosti, Obecné a dát odstranit soubory, pak ještě vedle Nastavení, nastavit na Automaticky a 5 MB prostoru. Ještě zvolit Vymazat historii ať je pořádek...</li><br><br>
+<li>Přejít na kartu Připojení, nastavit Nikdy nevytáčet připojení (jinak se na Smart Cache off line nedá dostat). Zvolit Nastavení, zaškrtnout Používat Proxy Server  napsat do adresy 127.0.0.1 a port 8080. Nahoře zrušit Automaticky zjišťovat nastavení. Pak OK a ještě Nastavení místní sítě, zase vyplnit Proxy a Port... Přejít na kartu Upřesnit a úplně na konci zaškrtni Vyprázdnit složku Temporary Internet Files při ukončení prohlížeče. Jelikož Explorer nyní nebude automaticky vytáčet připojení, je vhodné se připojovat třeba přes Outlook Express, Odeslat a přijmout poštu.</li><br><br>
+<li>Vytvořit si na ploše zástupce souboru Scache.bat který je v adresáři Smart Cache (kvůli snadnému spouštění). Ještě doporučuji nastavit automatické zavření okna programu po skončení - pravé tlačítko na zástupce, Vlastnosti a někde tam zaškrtnout Po skončení zavřít.</li><br><br>
+<li>A to je vše. Nyni zkuste Scache.bat pustit. Mělo by se objevit "dosovske" okno a po inicializaci něco jako Smart Cache 0.58 ready.  Vypina se to CTRL+C   - mačkat až to zmizí :o)</li><br><br>
+<li>Takže nyní pusťte Explorer, připojte se třeba z Outlooku a zkuste jít na nějakou stránku. Přepněte se na okno Smart cache - měly by se tam vypisovat soubory který se ukládají do adresáře Store.</li><br><br>
+<li>Když máte dost "nasurfováno", odpojte se, pusťte Historii (není nutné, lze surfovat i bez jen po odkazech) a můžete prohlížet. Explorer napřed vypíše, že stránka není k dispozici a buď Pracovat offline nebo Zkusit znovu - <b>NESMÍTE BÝT OFF LINE</b>, takže Zkusit znovu a mělo by to fungovat.</li><br><br>
+<li>Pokud prohlížíte pomocí Smart Cache stránky offline a chcete se připojit je dobré Smart cache vypnout a znovu zapnout!</li><br><br>
+<li>Pod Windows 98 je vhodné dát si ikonu Smart Cache do panelu rychlého spuštění.</li><br><br>
+<li>Pokud jste připojen tak tlačítko Obnovit zobrazí aktuální stránku jak je na Internetu.</li><br><br>
+<li>Pokud to nechodí, tak to může být tím, že máte novější verzi JRE! Doporučuji opravdu stáhnout JRE 1.1.8!</li><br><br>
+<li>Samotná data se ukládají do adresáře Store v C:\ . V adresáři se Smart Cache jsou navíc dva užitečné soubory:
+<ul><li><b>gc.bat</b><br>
+Smart Cache sama nedokáže automaticky redukovat velikost adresáře Store. Jeho limit je teď nastaven na 100 MB. Pokud je větší, nic se nestane. Pro jeho redukci je třeba spustit gc.bat... Pokud je menší než 100, tak to samozřejmě nemá cenu. Limit se dá zvětšit editací souboru "gc.cnf" v adresáři Smart Cache - položka "cache_swap_size".</li><br>
+<li><b>repair.bat</b><br>
+Tohle opraví nesrovnalosti v referencích adresáře Store. Odstraní
+nacachované objekty na které nejsou reference a naopak odstraní reference, ke kterým nejsou k dispozici objekty. </li></ul></li><br>
+<li>A jeden dobrý tip na ušetření peněz za telefon :o) V adresáři Smart Cache je soubor FAIL.CNF - v něm jsou zapsané URL masky, pro které chcete vygenerovat chybový kód 403 - přístup zamítnut. Používá se k blokování reklamních bannerů. Ideální je, že si můžete přesně
+nadefinovat, které servery/adresáře chcete blokovat, takže klikací mapy tam zůstanou a reklamní balast je pryč. Vhodné masky pro český internet jsou například:<br><br>
+<i>http://img.seznam.cz/reklama/*<br>
+http://www.adbanner.cz/*<br>
+http://charon.isdn.cz/.reklama/*<br>
+http://ad2.*<br>
+*/reklama*<br>
+http://195.39.16.53/adhtml.*<br>
+*/cgi-bin/banner/*<br>
+http://www.idnes.cz/idskosile/scripts/*<br>
+*/ids/archivobrazky/*<br>
+http://160.218.160.54/sms/img/*</i><br>
+</li></ul><br><br>
+18.11. 2001 zpracoval <a href="mailto:kopec@wo.cz">Martin Zeidler</a><br>
+<a href="http://www.kopec.ic.cz">Běžecké sdružení Kopec</a>
+</body>
+</html>

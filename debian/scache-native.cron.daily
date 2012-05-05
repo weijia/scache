@@ -1,0 +1,22 @@
+#! /bin/sh
+#Daily script for Smart Cache. Restarts it.
+# This file is public domain. No rights reserved.
+
+DAEMON=/usr/bin/smartcache
+CACHEDIR=/var/cache/scache
+
+if [ ! -x $DAEMON ]; then
+  exit 0;
+fi
+
+if [ ! -d $CACHEDIR ]; then
+  exit 0;
+fi
+
+
+#Fix bad ownership
+#cd $CACHEDIR
+#chown -fR proxy:proxy .
+#Fix bad file permissions
+#chmod -fR u=rwX g=rwX o-rwx .
+/etc/init.d/scache-native nice-restart >/dev/null

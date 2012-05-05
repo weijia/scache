@@ -1,0 +1,1241 @@
+CZECH HISTORY AND PRIVATE TODO LIST FOR SMART CACHE
+
+12.3.98 Smart Cache projekt zahajen
+17.3.98 POST Metoda by mela fungovat, ale je to nevyzkouseno.
+19.3.98 Core is working!
+20.3.98 0.10 
+         zvysena inteligence IMS pri refresh object
+         zlepsen mechanizmus detekce nepotrebnych dircache entry v pameti
+         zvetsen io buffer na 2048 bajtu - otestovano na rychlost.
+         zvetsen backgroundsave & GC interval na 10 minut
+         zlepsena multi-thread synchronizace, aby se zabranilo mozne ztrate 
+          dat
+
+0.11 
+     nove direktivy:
+     
+     no_proxy
+     redir
+     fail
+
+     lepsi empty dir_cleanup - jede mazat take nahoru v hierarchii
+     adresar se maze v garbage col fazi, ne v save fazi
+
+21.3.98
+
+0.12 pokud klienti posilaji IMS request a nelze se spojit, vratime 304
+
+     garbage collection zatim umi jen likvidovat unreferenced files :)
+     ale porad lepsi nez nic
+
+     pridany hlavicky do error message jako ma squid. Tj. last-modified
+     a expires na 5 minut.
+     
+     pridana hlavicka Date do cache-reply requestu, pry to nektere
+     browsery pouzivaji. Nevim k cemu.
+     
+     quick abort feature
+          
+
+22.3.98
+
+0.13 pri 404 zlikvidujeme objekt v cache
+     cachujeme jen urcite http response kody. Chyby NE, abychom si
+     nesmazali pripadny dobry objekt chybou.
+
+      vymazavani tmp souboru pri prerusenych transferech
+
+     podporovat case-insensitive filesystemy (HPFS, NTFS) nejlepe s autodetekci
+     blbost BFU je nezmerna
+
+     moznost nastavit zda budeme cachovat i pragma-no cache a expires s time<now
+
+23.3.98
+
+0.14
+    Cache oznamuje i testovani objektu na zmeny
+    
+    pri vyuziti pokracovani klientem preruseneho prenosu dat neni
+    nutne jiz cekat pred prerusenim na odpoved vzdaleneho serveru
+    
+    Pridana podpora pro soucasny download jednoho objektu vice klienty
+    
+    shutdown flag
+    
+24.3.98
+    
+0.15 
+     opravena chyba zpusobujici nefunkcnost POST requestu
+     
+     podepisovani se do user-agent hlavicek
+     
+0.16
+      opet zlepsena eliminace moznych kolizi pri soucasnem vicenasobnem
+      downloadu jednoho objektu.
+      
+      test zda mohou jmena koncit na .
+      
+      vyhazovani keep-alive zadosti z requestu
+      
+0.17  funguje i s developer.javasoft.com !! (posila chybne expires hlavicky)
+      
+0.18 pokud dojte pri refresh objektu k chybe, dostane klient stary objekt
+     zlepsena obsluha chyb pri cteni hlavicek ze serveru.
+     
+0.19 
+/    odstranovani pragma: hlavicek z requestu klientu, snad to vyresi
+/    problem s divne se chovajicimi servery pri IMS (viz apache docs).
+     
+     odstraneny z 304 odpovedi prebytecne hlavicky, jak to vyzaduje
+     definice HTTP/1.1
+     
+     zmeneny velikosti pismen v odesilanych hlavickach, aby to odpovidalo
+     norme. Nelze vyloucit, ze nejake servery delaji case-sensitive porovnani.
+     
+     do dulezitych datumu piseme opravdovy den v tydnu misto nedele
+     
+0.20 new cacheinfo filez (last access time) + konverzni utilita
+      +10% .cacheinfo filez size     
+      
+      rychlejsi exit pri shutdown flagu
+      
+      vypis chyb pri POST v OFFLINE rezimu
+      
+      pridavani hlavicky server do error messages
+      
+      error messages maji misto no-cache nastavenou expiraci na 5 minut.
+      
+      zapis datumu do error messages je nyni korektni vcetne dne v tydnu.
+      
+      datumy jsou uz psany ve spravnem formatu, dny v mesici < 10
+      jsou nyni doplnovany nulami. 
+
+0.25 
+
+       misto target not set vracime srozumitelnejsi hlasku - host unknown      
+           
+0.26 6.6.1997
+
+      zlepseno vyreseni konfliktu adresare a souboru stejneho jmena
+      
+      zlepseno osetreni filesystemcheck pri prvotnim spusteni scache
+      
+      timeouty
+      
+      pracovat i kdyz directory create fails
+      
+      necachuje se metoda HEAD !
+      
+      Pridavani portu do host hlavicek
+      
+0.27  FORWARDER ! 23.6.1998
+
+      necachuji se privatni http-dokumenty
+
+      default_forward_for ncic.netmag.cz 
+      
+      access logy podle masky
+      
+      zvetseny lokalni buffery pri IO operacich z 512 na 4096 bajtu pro
+      hloupe operacny systemy, ktere spatne cachuji (zejmena OS/2)
+      
+      opravena chyba pri bindovani socketu - nyni program nezustane viset
+      
+      registrace 
+      
+      volba bind to ip
+      
+      classes hashed..
+      
+      vicenasobny refresh patterny, TTL masky
+      
+      250 Pages/min !
+      
+      max_clients;
+      
+      ignorovat forced-reload reguesty klientu
+      
+0.28
+      obsluha chyb pri cteni pozkozenych .cacheinfo souboru, nyni se smazou pri
+      -killunref spolu s celym adresarem.
+      
+      mirne zrychleno ukladani .cacheinfo souboru na disk
+      
+      optimalizace hashtabulky dircache - startuje na velikosti 25
+      
+      nahrazeni equals("") length()==0
+      
+      vsechny (?) metody jsou nyni final
+      
+      opraveny hlavicky 304 pri load obj. failed podle normy
+      
+      neposilat hlavicky expire<now.
+      
+      netestuje se zda je filesystem case-sensitive - stejne to nemelo
+      zadny prakticky vyznam. Nekoverti se jmena adresaru na mala pismena
+      na non-case-sensitive filesystemech.
+      
+      posilat neexistujici stranky na serveru z cache
+      
+      fake last_modified header
+      
+      325 ErrorPages/min
+      
+0.29
+      command-line option -faststart       
+      
+      operavena chyba zpusobujici necachovani dokumentu pokud 
+      neobsahuji expired hlavicku pokud by bylo pragma_nocache 0 
+      
+      vylepseno generovani last-mod. headers, nyni funguje i pri "pruchozich"
+      objektech.
+      
+      optimalizace generovani chybovych zprav - bohuzel vykon se meritelne nezvedl...
+      
+      posilat stranky z cache pri chybe serveru
+      
+      
+0.30 3.8.1998
+     opraven spatne pocitany refresh v komercni verzi
+     
+     test zda neni last-modified v budoucnu
+     
+     garbage collection!
+     
+     bugfix create temporary file v adresarich, ktere nebylo mozne vytvorit.
+     
+     bugs: pri load failed zustane nekdy reference na objekt!
+     
+0.31 18.8.1998
+ 
+    odstranena chyba v -killunref/gc. Unreferenced soubory se mazali
+    ob jeden. Tato chyba byla ve verzi 0.30     
+    
+    zlepsena obsluha chyb pri loadingu
+    
+    new option in generate_lastmod 
+    
+    pri deleni na adresar se jiz zohlednuje i : - problem s developer.com
+    deleni adresare je nyni rychlejsi
+    
+0.32 odstranen bug v GC, kdyz mame v cache malo objektu    
+    
+0.33 5.9.98
+     403 error kod pridan do 'remote server errror'
+     snad opravena obcasna nefunkcnost direktiv
+        bugs: send deleted a send on error obcas nefunguje???
+        
+     opravena matouci hlaska another rescan v GC
+     
+     pise se velikost objektu
+     
+     nepise se delta if unrefreshable
+     
+     default maxobjectsize pro GC  je 10 MB misto 4 MB
+     
+      check: deleted hot dir?
+     
+0.34 12.9.98
+      zoptimalizovana fuknce dir_cleanup
+      
+      pridana hlavicka proxy-connection: close do ERROR zprav - netscape
+       se kupodivu zrychlil
+       
+       Specialni Fail dokument
+       
+       Opravdu se uz necachuji password-protected dokumenty!!
+       
+       moznost vyhazovat pragma no-cache hlavicky z requestu.
+       
+       mirne vizualne upraveno chybove hlaseni
+       
+       nedulezite hlasky se posilaji na stderr
+       
+0.35   20.9
+       
+       zlepsena kontrola pri vicenasobnem load stejneho objektu       
+       
+       referer_hack
+       
+       fix pro kreteny co neumi psat http malymi pismeny
+
+       BindAddress na * v registrovane verzi
+              
+0.36   20.11
+       podpora pro anchor (#) v requestech
+       
+       hlaska cleaned empty dir se posila na stderr
+       
+       fake_referer
+       
+       fake_user_agent
+       
+0.37   18.12
+
+       no_proxy, pass, fail, nocaching, cacheonly
+           muze mit vice polozek na radce oddelenych mezerou
+           
+       podpora pro HEAD requesty. Nyni jiz neposle cely text, ale jen
+       hlavicku. Nejake idiotske web grabery to pletlo
+       
+       odstraneny REGISTERED version only features.
+       Nyni jdou uz vsechny. Nebavilo mne posilat lidem neustale reg. klice.
+       
+       registracni klice jiz nejsou potreba
+       
+       jiz neblbne pri spatnem konfigu. Obcas vypisuje i cislo radky v cfg
+       souboru.
+       
+       minor speed improvent by changing indexof
+
+       podporovat http://login:passwd@www.foo.com ?
+        browser posila Authorization: Basic aHNuOnplcm8=
+              mimecoded hsn:zero
+              
+       minor gen name speedup
+       
+       default filename is configurable
+       
+       numbers are inserted on start of filename, not end.
+       
+       adbusters & lastvercheck support taken out
+       
+       support for gatewaying other protocols packed into HTTP
+         podporovat ftp://zz.yy/ -> zz.yy_ftp
+         
+       noproxy jiz neni case-sensitivni
+       
+       noproxy localhost will no longer match localhost.domain
+       
+       logfiles are now closed when smartcache is iddle
+       
+       fake_referer is alias for referer_hack <URL>
+       
+       agent logging
+       
+       agent_log pattern filename
+       
+       referer_log pattern filename
+       
+       synchronize on log writers
+
+       protocol not supported by this proxy!
+       
+       fixx gc for ^ftp
+       
+       GC jiz nepada na spatnem konfiguracnim souboru tolik casto
+       
+       prepinac -local
+
+0.38   10.2.1998
+
+       cache_password_protected 0/1
+       
+       hlaska HTTP 0.9 servers are not supported
+       
+       requests no longer crash when got invalid content-size header
+       
+       v refresh time delta se rozlisuji dny (d) a minuty (m). opraveny
+        zaporne hodnoty, snad je to uz lepe(?). dny se pouzivaji pokud je to
+        vice nez 2 dny
+       
+       v chybove hlasce je content-type na prvni radce, pry nejaka mime definice
+       ci co...
+       
+       default mime type je text/html
+       
+       fake garbage collector
+       
+       minor arg handling bugfix
+       
+       added socket linger option 
+       
+       case_sensitive_matching
+      
+0.39   10.3.1998
+
+       fixed bug in forwarder, which has been broken from 0.37. Why nobody
+       reports it?
+       
+       OUTGOING c00kies filter
+       
+       Expires header has now support for Microsoft IIS 4.0, which violates
+        HTTP1.0+ protocol. We are Microsoft! WE ARE standard, you all must fix
+        your software acording to our bugs.
+        
+       piseme delta i v hodinach
+
+       hit miss stats
+       
+       repair podporuje i filenames -> prevede na adresar
+       
+       immediate_shutdown_flag
+       
+       fail_file
+       pass_file
+              
+0.41   Wed Sep 8 1999
+
+       nejake typos       
+
+       zmeneno na open source software
+
+       nacitani konfigurace z cfgdiru -cfgdir /etc
+
+       podpora pro read-only filesystemy (CDROM)
+
+       -cdrom path d1 d2 , manualni urceni cacherootu
+
+       rebalancing directory po zmene d1 d2
+
+       DONE: test na adresar cache, zda je read only
+
+       repair vybaven -q prepinacem. Pise pouze chyby.
+
+       repair dostal vylepsenou mime tabulku
+
+       autodetekce read-only filesystemu
+
+       import into scache
+
+       zlepseni zpracovani command-line, mozno pouzit vice voleb
+         soucasne
+
+       repair umi nacitat externi tabulku mime.types
+
+       repair ma jeste lepsi interni MIME ext tabulku
+
+       reload_block files je nyni porad zapnuto
+
+       anglicka dokumentace prekontrolovana pomoci ispell -d british
+
+       varovani na chybejici CFG soubory je nyni (snad) jiz spravne..
+
+0.42       
+       2.4.2000
+
+       repair: pozdejsi mime typ prepise predchozi
+
+	repair: rekururzivni repair -r switch
+
+	new keyword mime_types
+
+        testovani delky souboru, zda je nekdo nezeditoval
+
+        ignorovani novych souboru < 6 minut starych pri
+	   kill_unref
+
+	-p prepinac <port number>
+
+	preorganizovan request.make_headers (date cpu vic dolu)
+
+	pridan 307 http rc kod pro cacheable responses (temporary
+	redirect)
+
+	test existence cacheroot pri startu
+
+	zlepsena detekce Lost directory pro linux, test na to zda se muze
+	zapisovat do .cacheinfo souboru
+
+	repair - pridan -f prepinac
+
+	repair - pridan -x <exclude> prepinac
+
+	repair - pridan -i <defaultfilename) prepinac
+
+	repair - pridan -n prepinac (nedelej nic)
+
+        import: pri kopirovani se zmeni timestamp
+
+	import: funguje i na read-only filesystemech
+
+	import: zkusi nejdrive rename a kdyz to selze tak copy
+
+	import: regenerovani novych jmen pri konfliktnim jmenu opraveno
+
+	repair maze prazdne adresare
+	
+        import: nejak blbne s /tmp/X11-unix... obsluha chyb pri copy...
+
+	repair: ma inteligentnejsi hlasku start a neopakuje jiz pridane soubory
+
+	generovani chybovych hlasek je rychlejsi (ekologicka varianta)
+
+	errordocument 403 0 -- hardwired 1x1 empty GIF
+
+	repair pridan do -x ! znak (smaze vse) a moznost dat vice masek
+	oddelenych pathseparatorem (Unix :, Windoze ;)
+
+	podpora pro PUT
+
+	podpora pro OPTIONS
+
+	podpora pro DELETE
+
+	podpora pro TRACE -  castecna (neni spravne http/X.X)
+
+	zlepsena podpora pro linger (setri sockety pri chybach)
+
+	pridano vice quotes
+
+        RC: posila 500 misto 400 pri load failed (like Apache)
+
+	Zlepsene src/Makefile
+	
+        logovani se spravnou timezonou
+
+	HTTPS a CONNECT
+
+	odstraneny nektere lintian warningy
+
+	pridan http rc 410 jako cachovaci
+
+	GC uz nebezi na READ-ONLY cache
+
+	kill-unref take ne
+
+	filesystem check is now always performed
+
+	test for read dirsize report
+
+	Vsechny hlavicky Pragma: se zpracovavaji jako no cache
+	 (some servers sends Pragma: private)
+
+	 detekce spatneho cisla portu (ne cislo)
+
+	CONNECT nyni funguje i na nelokalni servery
+
+        allowconnect 443 563 80 8080 8000 25 21
+
+	clear_flags_on_start 
+        nastavit, zda mazat flagy pri startu SC
+
+	fail_trace
+        logovani fail na consoli
+
+      vice citatu z Gity
+
+      zlepsena obsluha necitelnych expire hlavicek
+
+      fyzicka likvidace PNC a expire hlavicek z odpovedi
+
+      visible_link
+
+      stat_log
+
+      repair umi komentare v ext. tabulce
+
+      statistiky do souboru
+
+      append_via
+
+      cookies filter neni case sensitive
+
+      opravena dirhash fce
+
+0.43
+     pise se chyba i pri load-headers fazi
+
+     pise se detailnejsi informace pri testovani na validitu objektu
+
+     opravena chyba v importu, pokud objekt jiz existuje.
+
+     odstraneno setdirty
+
+     zlepsena obsluha chyb pri load
+
+     neimportovat hostname bez '.'
+
+     vzdy delat FScheck a to zejmena pred importem
+
+     referer_hack nebere non-numeric argumenty, use fake_referer instead
+
+0.45 20.5.2000
+
+     pracuje i pri 0 bytes diskspace free.
+
+     nejake pokusy s descriptor-leakem pri close, snizen pocet syscallu.
+
+     clean updirs nepada na null pri empty store
+
+     opraven regexp.toString()
+
+     touch LRU pri importu
+
+     debug string v load pri unexpected rc
+
+     refage<0 ji zakaze
+
+     maxobjsize<0 ho zakaze
+
+     rc 408 je temporary server error
+
+     * se implicitne pridava k pravidlum v fail/pass cnf
+
+     negativni cachovani nejakych 4XX chyb
+
+     nikdy nemazeme localfile pri 404
+
+     nocaching jiz opravdu funguje i pokud klient nebo server 
+       posle pragma-no-cache
+
+      EXPORT DAT! -export[date|lru|filedate] /tmp/zero 2d
+
+0.46 8.8.2000 
+      - neblbne pri disk full pri logovani do access.log
+	
+      FAILED se pise velkymi pismeny
+
+      normalizace ..
+
+0.47 27.9.2000
+     Negative_cached_penalty (pro GC)
+
+     repair ma -w prepinac
+
+     repair nepada na adresarich kde nema pravo pro cteni
+
+     lepsi obsluha out of diskspace
+
+     nova struktura cacheinfo souboru + dokumentace pro ni
+
+     podpora pro content-encoding
+     
+     www.finanztreff.de by mel pracovat
+
+     auto_compress
+
+     repair ma -c pro kompresi
+
+     repair podporuje koncovku .gz pro kompresi gzip
+
+     auto dekomprese
+
+0.48 10.10.2000
+
+     lepsi import podpora pro generovani localname koncici na .gz, vcetne
+      _r
+      Nepouzije data directory c:\
+      pri testovani expire hlavicek pouzivat Date: ???
+      expire se posunuje do naseho lokalniho casu
+      pragma_no_cache 4 (redirects)
+      if expire <= now, Pragma: no-cache is generated
+      refresh_pattern ma 0.5 v default configuraci
+      refresh pattern muze mit float
+
+0.48.3 11.10.2000
+	fixnuta compress filename gen chyba
+
+	flushlogs pri immediate shutdown
+
+	common log file format fixed 
+
+0.49	27.10.2000
+	redir a expire refresh pattern
+        zjistit proc blbnou (jsou cachovany redirecty)
+
+0.49.1  26.01.2001
+      test filename s | na windoze/os2 (asi OK)
+      
+0.50   25.02.2001
+	auto_decompress 2 - always
+	auto_compress x
+
+0.51   21.03.2001
+	auto_compress 0 nekompresovat
+	access_log * works again
+	synchronized gc.java and mgr.java filename generator
+	
+0.52
+	24.04.2001
+     zmenena obsluha pri nacitani fail_file bez * -> *host/*
+     nocompress .ext
+     alive_flag
+
+0.53    01.05.2001
+	odstranen stack dump pri fatal err bind
+	odstranen rounding error (monika bug)
+
+0.54
+	linger,etc
+
+0.55	
+	opravena chyba JS pri errordocument !
+	opraven problem with filedate on FAT system (Monika)
+
+0.56
+       nefunguje kompilovana jikes
+       opraveno delete aliveflag on normal shutdown (Hartmut Krafft)
+       stopped typo
+
+       cachedir muze mit mezery
+       fakereferer a fake cookie take
+
+       Cacheroot muze obsahovat mezery *vevnitr* for Mac
+
+       -cfgdir handling cleanup
+
+0.57
+	codebase cleanup
+	removed -convert020, -convert030
+	removed adbusters
+
+	renamed fail_trace to trace_fail
+
+	increased default cache size to 100 mb
+
+	-cfgdir fixed (Bastian Maerkisch)
+
+	blocking https://* in fail.cnf now works
+
+	removed fail, pass, allow_cookies_to, wafer options
+	
+        trace_url
+
+        yes/no on/off support for case_sensitive,append_via,keep_deleted,
+        cache_password_protected, remove_pragma_no_cache, trace_fail
+        trace_url,hide_errors,full_referer_log
+
+	trace_request
+
+	trace_reply
+
+	request compressed data from server when compression is enabled
+
+0.58
+
+       v trace se zmenilo < vs >
+
+       fail hlaska pozmenena tak, aby pripominala ostatni trace hlasky
+
+       added refresh engine tracing
+
+       trace_abort
+
+       on/off mohou byt i true a false
+
+       allow_all_session_cookies
+
+       trace_cookies
+
+       Gc loops over and do not deletes anything?
+
+0.59
+       lepsi hlasky z traceru refresh engine 
+
+       fixed reloading if -cfgdir switch is used
+
+       full regexp match
+
+0.60
+	removed zbynek lamer detector
+	refresh casy se pisi lepe
+	zlepsene hlasky pri trace refresh
+        download machine support
+
+0.61
+	new file ui.java 
+        port bez cisla nefunguje
+	ui_port
+	ui_bindaddress
+	ui_hostname
+
+	fixed message access denied for http 0.9 clients
+	loader_add_missing
+	loader_add_reloads
+	loader_queue_file
+
+0.62
+	loader_add_depth
+	loader_refresh_depth
+	fixed setting auto add to off, disables refresh confirmation
+	changed 202 message for DM
+	unix scripts added
+        prohlizeni queue + mazani queue
+        prohlizeni nacachovaneho obsahu
+	opraveno: pro UI se vzdy pouzije prime spojeni
+	misto localhost se pouzije pro ui 127.0.0.1 - fix NS bug.
+	UI welcome screen
+	port numbers are printed on start
+	local smart cache search
+
+0.63
+	FIX queue show displays URLs
+	FIX search form in Netscape and Opera
+	search dialog for browse and search
+
+0.64    
+        UI: URL deletion
+	UI: Directory deletion
+	fixed URL parser when protocol is null
+	fixed saving directory after object is deleted
+	fixed regexp patterns (no need to add .*substring.*)
+
+0.65
+        Repackaged, removed source from ZIP archive.
+	Removed .classes from tar.gz archive
+	turning on auto add missing pages from UI fixed 
+	tar.gz distro
+	non persistent objects are not shown in directory listing
+	cache-control: reload
+	nicer cache browser
+
+0.66
+	add missing/reloads disabled when ui_port is not defined
+	added quotes to GUI HOMEPAGE
+        fix for errordocument ! pro .js
+
+0.67
+	fix for URL with no * in fail.cnf
+	added some missing <title> to GUI
+	removed debug output from regexp engine
+	added <title> to UI msgs.
+	do not use download machine for downloading from ui_hostname
+	check if we are using UI with right hostname, SC needs this
+	for special UI request handling.
+	
+0.68
+        dirstats reports removed dirs too.
+	ansi_init patch for eCS
+	loader_add_reloads renamed to loader_add_refresh
+	full_referer_log yes/no in default sample cfg
+	cache_sensitive_matching in gc.cnf accept yes/no values
+	JmS pink gif patch
+        generovat filename s .gz pokud dostaneme obsah zipped
+
+0.69
+	removed anti-windows parts from user manual
+	fixed typo in GC
+	periodic gc runner
+        podpora IP access with submasking
+	redebianized
+        do not block UI strings by regexp
+	sponsorship
+	append_via removed
+	proxyvia header
+	bindaddress announced on startup
+        https_proxy chaining
+
+0.70
+        -direct switch now works (broken in 0.69)
+	UI added cache-control: no-cache to responses
+	UI removed no-cache from redirects to good ui hostname
+	too more clients -> too more connections
+	send_from_cache now handles IMS requests in the correct way
+	 (Needed for Opera5)
+	Redirects to UI generates now last-modified-date in the past
+	summary: Opera5 now works with redirects generated by SC (uff!)
+	ui announces URL when adding it to loader queue, saves 1 goback.
+	adding proxy-connection: close to all documents flying through.
+	changed startup messages: host os -> filesystem
+	updated troubleshoting
+	removing not needed rules.
+
+0.71
+	" is needed to escape in UI
+	renamed max-clients -> max connections
+	fixed debug output from refresh engine when forced refresh is
+	ignored.
+	do not display choices for loader in ui home if not configured.
+	fixed typo
+	fixed netmask /n problem when n div 8 != 0
+        Fixed problem with cfgdir and regex_fail
+
+0.72
+	cache searches are less cpu intensive
+	fixed problems when auto deleting of patterns was too active on
+	 refresh_patterns
+	added seconds to delta reporting engine
+        test googlu na .gz
+
+0.73
+         -nocache command line switch
+	 -nofail  command line switch
+	 -online  command line switch
+	 -fastrefresh
+	 -cookies
+	 appending to existing via header
+
+0.74
+	- etags are now stored in .cacheinfo files
+	- support for ETag / if-none-match
+	- prepare methods for webdav/deltaV support, lack of documentation
+	- do not use IMS when requesting files which are missing from cache
+	  for full implementing
+	- head requests do not fails on not yet cached object
+        - repair handles better .txt.gz files when adding them	
+	- user agent - added space before
+	- fix for refresh and no if-mod-since header
+
+0.75
+	- UI: bindaddress shown
+	- UI: show queue is not shown when there is no loader support
+	- UI: file date instead mime type is shown
+	urlmatching in GC corrected
+	example for gc urlmask with protocol added to sample cfg
+	fixed typo in gc output
+	download_machine_ignore  URL
+
+0.76
+	loader ui accept also "" as default loader depth as default ui depth
+	end of queue message displayed
+	ui shows which urls is removed from queue
+	-ui_port runs  UI on alternate port
+	download_machine_mask -> download_machine_url_mask
+	no more duplicate entrys in download machine file
+	new feat dmachine_ctype_mask
+	ui: dmachine queue show
+	ui: dmachine queue delete
+	trace messages are now good even if no http_proxy is used (side
+	 effect of adding dm ctype hook)
+
+0.77
+        GC: minimum_object_size  (idea from squid)
+	maximum_object_size is now in Bytes (not KB as before)
+	agent-log removed
+	referer log removed
+	combined logfile format
+	httprc are logged correctly
+	transfered bytes also
+	gc: small_object_penalty changed to be like LOP
+	-nolog command line switch
+	auto_decompress can also unpack deflate encoding which is default
+	  by newer IIS servers.
+	GC: cache byte size is now more exact
+	GC: cache size is now long integer
+	short refresh patterns are no longer allowed
+	do not print that dirs are GC's there are freed. - remove user
+	 confusion
+	some hardcoded defaults was retuned
+	DEBIAN: debconfed, removed chown and chmod fix
+	unix: do not allow root to run system-wide scache, change uid to
+	 proxy
+        DEBIAN: support for logfiles
+	-notrace
+	-local switch now sets a maximum possible expire time (benchmarks
+	results increased by 5%)
+	note: increasing internal buffers from 4096 to 8192 lowers performance.
+	log_common true/false
+	new: dmachine_offline_url_mask command
+	UI: port of main server is shown
+
+0.78
+        GC: do not allow average dirsize < blocksize
+	reports now correct count of unlinked directories (updirs included)
+	GC: deleted directory during GC pass is now correctly counted
+	printdelta supports Months, years
+        trace on/off to GUI.
+	new configuration keyword loglevel
+        speed up by reverse regsearch fail/pass
+	on conflicting filenames, use random numbers, not loop over long
+	 list of possible list of existing filenames. Really big performance
+	 improvment for directory with about 1000 files with conflicting
+	 filename (i.e. Google).
+      verbose level do .cnf
+        0 - nic
+	1 - system errors 
+	2 - operation errors
+	3 - stats
+	4 - operation
+      look for etag and return 304 if exists and connection failed.
+      force_ims_on_reloads pri forced refresh + nolastmod nepridavat lastmod
+      http request method is printed on trace_url
+
+0.79
+      native gcj binary builds do not needs jdk installed
+      first rule in pass/fail was allways matched insensitive
+      pass/fail works again (bug in 0.78)
+      podpora posilani content-length 0
+      new config keyword `listenbacklog` defaults to 511
+
+0.80
+      depth po search je spravne nastaveno
+      fixed npe pri bad method
+      fixed cleandir
+      smart cache now renames conflicting filename when needs to create
+        directory
+      search cache feature
+      UI: purge search cache
+      ui_searchcachefactor
+      414 rc cacheable
+      410 is also deleted
+      debianizace pro apt
+      report middle on gc cache summary
+
+0.80.1
+      combined log do not has doubles \n
+      fixed crash for non-numeric depth in UI search dialog
+0.81
+      combined log has missing "
+      UI: flush logs
+
+0.82
+      https funguje i pokud je definovana pouze http_proxy
+      podpora persistent connections
+      export can recognise floating point values as arguments
+      values 1d can be now used in refresh patterns
+      print notice when refresh pattern gets ignored
+      trace_keepalive
+      UI  ka trace
+      keepalivetimeout (sec)
+      console loglevel setup in UI
+      remove end file separator from target export dir
+      fixed scache -export bug from 0.54 version
+      gcloglevel level
+      tabulka pro 1x1 v zavislosti na cache size
+      GC: improve reports somewhat
+      test for not using root directory as cache data on windows somewhat
+       improved.
+      download_machine_ctype_ignore 
+      mirne snizena pametova narocnost GC
+      fakegc do not deletes files when =zzz rule is used
+      GC: objects with ETag are checkable
+      redirect_penalty option volba pro GC
+      prepinat loglevel v UI
+
+0.82.1
+      fixed NPE bug on unknown hostname when not using http_proxy
+      GC: no infinite loops on lopsizeinc=0  or sopsizedec=0
+      GC: null modificators (i.e. +0 *1 -0) are detected and ignored
+      aby se prepinaly on off knofliky
+      
+0.83
+      keep-alive on input side
+      trace_input_keepalive
+      debug input keepalive
+      disable TCP nagle as recommended by w3c
+      improved synchronization on logs files
+      log keepalive connections
+      opravit synchronizaci v logovani
+      max aborted transfer time je floating point
+      opravena chyba - generovani file/dir clash funguje i pri exportu
+      send reset on full cache
+      refage je floating point, podpora 999999 jako maxrefage
+      choosing good cache size
+
+0.84
+      update Etag info on 304 reply if possible
+      Allow client side persistent connection for 304 reply
+      -fastrefresh sets max age 1 day
+      GC: do not apply multiple modifiers to object when doing GC, allow
+        better finetuning
+        GC: prekontrolovat aby se pokud mozno nepouzivaly nasobitele vicekrat
+      UI: dodelat missing <title> u odpovedi
+      barvicky pro refresh, add
+      psat url u chyb odpovedi
+      do not update expire info if not known
+      run makeheaders instead of gatewaying server 304 reply code.
+      fixed bad headers on 304 reply from miscrosoft IIS5 and earlier
+      more intelligent check for writeable filesystem, old failed on NW
+
+0.85
+      fixed bug in POSTs and keep-alive
+      fixed NPE in webconnection.toString()
+      disable keepalive for blocked post
+
+0.86
+      redir_file
+      removed command redirect
+      rewrite_file
+      trace remap/redirect
+      visible link shown in UI
+      UI: handle numberformatexceptions in all cases
+      UI: quote next, prev.
+      UI: some strings in HTML gets quoted
+      Generate Etag header on auto decompressed data also.
+      Fixded bug which prevents from sending Etag to client in most cases. (SCACHE uses Etag internally)
+      Zero sized reply is now handled as error.
+      Allow client side persistent connection UP after errors generated by SC.
+      Allow client side persistent connection UP after 304 reply msgs.
+      Fixed typo which makes client side if-none-match work again.
+      Server reply code is shown in trace response
+      .released as Beta3.
+      Do not retry persistent connection on network read timeout
+      Exit if main directory can not be created
+      -gc 8h
+      timestring support 's' for seconds.
+      improved check for root as cachedir
+      make -fakegc info more accurate
+      generate_lastmod made boolean. Value 2 never works in any browser.
+      close file after sending data from cache (new bug in 0.82) ; fixes
+      can not rename problems on windows.
+      close file after sending data from cache on HEAD method.
+      add commands trace_remap trace_rewrite to .cnf and -notrace
+      handle HEAD requests correctly when refreshing or loading objects.
+      ftp_proxy support
+      fixed crash when access log file can not be created
+      removed forgotten debug prints
+      manual updated
+      .released as Beta4.
+      adding of proxy-connection headers to passthrough server replies. We
+       need this because we are turning HTTP/1.1 into HTTP/1.0 response.
+      send expires on passed 304 reply
+      do not send stale cached entry if hide errors is false.
+      Podpora Cache-Control: private, no-store, no-cache
+      cache_private
+      check for HTTP/1.1 and enable KA istead of checking for HTTP/1.0
+       and disabling.
+      podpora pro 100-Continue
+      podpora pro 204-No content
+      debian: delete logfiles on purge
+      debian: purge only if not /usr/bin/smartcache exists
+      debian: new logfile for weekly gc
+      debian: corrected bad filename cookies.cnf
+      added first historical SC announce in 1998.
+      inputtimeout renamed to client_timeout and made timestring
+      proxyreadtimeout renamed to read_timeout and made timestring
+      keepalivetimeout renamed to pconn_timeout and made timestring
+      new feature request_timeout (timestring) idea from squid
+      .rc1
+      retry 1 times every failed request, not just keepalive with timeout.
+      close persistent connection when throwing out body reply.
+      default_forward_for is now unset by default.
+      max_aborted... made timestring
+      remove Cache-Control: from response as well Pragma: no-cache
+      final.
+0.87
+      BUG FIX: cacheable has now priority over cache-private
+      UI: escape # in URL.
+      changed word wrap in BG quote
+      -fakegc reports how many bad files was deleted from cache.
+      Report network error when headers read failed.
+      quick_abort_min 16 b
+      quick_abort_max 16 b
+      quick_abort_pct 95
+      timestring supports 'f' - fortnight
+      timestring supports long titles like minute, hour, week, day, year, second
+      reference_age je timestring
+      min/max_ob_size je sizestring
+      blocksize je sizestring
+      avg dir size je sizestring
+      cachesize je sizestring
+      large/small obj penalty supports sizestrings
+      corrected printDelta values for months and years.
+      flag_check interval je timestring
+      port remamed to http_port
+      nocaching renamed to no_cache
+      force_ims_on_reloads renamed to reload_into_ims
+      cache_swap_<low|high>
+      report transfer errors on direct request to client
+      reuse keepalive connection when direct request has no data from client
+      cache_size -> cache_swap_size
+      min_download_size for dm online hook
+      disable keepalive after trace and options reply
+      handle io errors when loading body of non GET requests correctly
+      reply_body_max_size  ok
+      request_body_max_size ok
+      max_cacheable_size   ok
+      fixed error in webconnection.close()
+      stop on SC generated errors during refresh object
+      disable client keepalive on failed POST
+      do not Exit if main directory can not be created, switch to readonly
+       mode instead.
+      .released as a1
+      do not exit if port for UI can not be binded.
+      DIRS counts are printed to stat.log
+      stat.log analyzer v 0.1 added
+      cacheroot renamed to cache_dir
+      GC: do not crash on cachesize 0
+      UI: escape backslash (Karl-Heinz)
+      Removed throws IOException from scache.main and mgr.go (it was not needed)
+      touch object when generating 403 too large reply
+      cache_vary
+      handling of Expires: header changed to rfc2616 14.21
+      .made final
+0.88      
+      reset chunked encoding and ims status when sending object from cache if refresh failed after receiving headers from server.
+      build system: when generating scache-latest.zip, remove not changed .class files - allows faster beta releases
+      .released a1
+      added shutdown CTRL-handler by Karl-Heinz for jdk > 1.3. Still jdk1.1 compatible.
+      uses line.separator when generating logfiles.
+      build system: generate scache-latest.diff.gz file by hand, not via CVS diff
+      flush logs on shutdown
+      .released a2
+      added example large cache configuration
+      stats.py: added ignore offline mode switch
+      stats.py: increased max. time difference to 3m+10s
+      mgr.save() is now synchonized
+      reinit dircache hashtable when idle (frees memory)
+      ignore empty request line (like Apache); needed for fixing bad
+      POSTing clients on keepalive connection.
+      .released a3
+      removed debug prints from shutdown hook function
+      UI: sent expires header in the past in reply
+      .made final
+      
+0.89
+      do not convert to lowercase on case-insensitive redirect/rewrite
+      cacheobject.genTmp() is synchonized
+      .a1
+      remove all levels of empty directories during GC/killunref
+      .a2
+      repair: default type can be now set
+      repair: mime table can be reset to empty
+      repair: fixed argument processing for -i
+      repair: can translate &amp; to &
+      smart cache now accepts SPACES in URL. Some broken browsers do
+       not encodes them as %20. Target server can still reject
+       URL as invalid.
+      changed compresed: message
+      .a3
+      ui_searchcache_minage
+      ui_searchcachefactor => ui_searchcache_factor
+      changed typo in welcome message
+
+0.90
+      fix corrupted logfiles
+      support for Cache-Control: no-cache
+      support for printime timestams on trace debug output
+      v UI se nezpracuje URL s mezerama viz www.vaisnava.cz
+      in rfail.cnf more than 1 regexp works
+      clear_flags_on_shutdown
+
+0.91
+      use system new line separators when writing to loader or download
+       machine queue
+      write thread number to rename failed error messages
+      UI: make URL longer in directory list and Date shorter.
+      UI: link when removing url from queue
+      UI: missing title when deleting from queue
+      added support for max_cacheable_size in live streams
+      TRACE message printed when we are removing outgoing c00kie.
+
+0.92
+      overwrite_by_redirect y/n
+      podpora pro redirecty bez wildcards
+      repair podporuje .rss
+      scons build framework added
+      fixed security hole by disabling forwarder code
+      tar builds from gnuarch repo added
+
+0.93
+      overwrite by redirect documented
+      -local switch now works
+      303 return code supported
+      allow refresh redirect time > min_refresh time
+      Support for Expires: never
+      Support for Expires: 1.1.1970
+      Fixed crash caused by synchronize error in printDate
+
+0.94
+      Search cache is now saved to files with .tmp extension
+      Fix typo in UI
+      New defaults in gc.cnf
+      Changed copyrights to GPLv2
+      Fixed typo in idle connection cleanup
+      Increased default timeout from 25 sec to 29 sec.
+      JRE 1.5 is now required
+      Replaced Vectors by ArrayList
+      JRE 1.3 hack for shutdownhook removed
+      Code cleaned up to conform Java 5.0 standards, deprecated methods are still
+       used.
+      dont crash on HTTP/1.0+ requests without URI
+      Add support for save_noncacheable
+      improve initial message from fake garbage collection, print user configured values instead
+       of values used during fake gc.
+      Use Java util.regex instead of gnu.rex
+      multi line HTTP/1.1 headers are supported now
+      Update SGML documentation, removed outdated references to Java 1.1
+      switched stat counters to AtomicInteger
+      Some regexps didnt work - solved with switch to java regex
+      Dont try to create directory with * in name on windows machines

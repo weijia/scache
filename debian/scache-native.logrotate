@@ -1,0 +1,14 @@
+#
+#       Logrotate fragment for smartcache
+#
+/var/log/scache*.log {
+        daily
+        compress
+        delaycompress
+        rotate 2
+        missingok
+        nocreate
+        notifempty
+        copytruncate
+	create 640 proxy proxy
+}

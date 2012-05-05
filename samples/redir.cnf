@@ -1,0 +1,21 @@
+# redir.cnf - Redirecting specified URLs to another
+#   some redirect use examples. 
+# Syntax:
+#   src-mask target-url star-number
+# Method 1>
+#this redirect http://www.netmag.home.cz/sample.html to
+#              http://netmag.cz/sample.html
+#  http://www.netmag.home.cz/*        http://netmag.cz/ 1
+
+# Method 2>
+#this redirect http://ncic.netmag.home.cz/sample.html to
+#              http://ncic.netmag.cz/
+#Example:
+#  http://ncic.netmag.home.cz/*   http://ncic.netmag.cz/ 0
+
+#defining alias for webcrawler
+# http://www.webcrawler.com/*    http://webcrawler.com/ 1
+
+#fast redirect. Skip server side redirector.
+#  */redir.php?link=* * 2
+     

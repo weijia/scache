@@ -1,0 +1,12 @@
+#! /bin/sh
+set -e
+
+#DEBHELPER#
+
+if [ $1 = "purge" ]; then
+   if [ ! -e /usr/bin/smartcache ]; then
+       rm -fr /etc/scache
+       rm -fr /var/cache/scache 
+       rm -f /var/log/scache*
+   fi
+fi   

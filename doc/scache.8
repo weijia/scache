@@ -1,0 +1,74 @@
+.\"Smart Cache is copyrighted by Radim Kolar and distributed under GPL
+.TH SCACHE 8 "1 May 2001" 
+.\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
+.\" other parms are allowed: see man(7), man(1)
+.SH NAME
+/etc/init.d/scache \- Control script for Smart Cache
+.SH SYNOPSIS
+.B /etc/init.d/scache
+.I start|stop|reload|restart|force-restart|force-reload
+.SH "DESCRIPTION"
+.B scache
+control the operation of the
+.BR smartcache (1)
+server running on the UNIX systems. Usually
+.B scache
+is invoked at system boot time with the
+.I start
+parameter and at shutdown time with the
+.I stop
+parameter. The
+.B scache
+script can also manually be invoked by the system administrator to shut
+down, restart or reload the Smart Cache caching server.
+.SH "OPERATION"
+.B scache
+controls execution of the Smart Cache http proxy server. Server
+runs under user-id
+.I proxy
+using
+.B /etc/scache
+as main config directory. Server is started by non-gui version
+.I (java_ns)
+of the Java launcher with
+.B tya
+JIT compiler enabled (if tya package is installed).
+.SH "ARGUMENTS"
+.B scache
+script accepts only one argument.
+.PP
+.PD 0
+.TP 8
+.BI start
+starts the 
+.BR smartcache (1)
+server.
+.TP
+.BI stop
+stops the
+.BR smartcache (1)
+server.
+.TP
+.BI reload
+no effect, just displays information about auto reloading configurations files.
+Restart is needed only after changing main configuration file
+.I scache.cnf
+, others changed files are reloaded by running server.
+.TP
+.BI nice-restart|force-reload
+Restarts running
+.BR smartcache (1)
+server. If server is not running, nothing happens.
+.TP
+.BI restart
+Stops and starts
+.BR smartcache (1)
+server even if it is not currently running.
+.SH "SEE ALSO"
+This man page describes only controlling of the Smart Cache proxy server.
+For more information about server itself see manual page
+.BR smartcache (1)
+.
+.SH "AUTHOR"
+This script and manual page was written by Radim Kolar, for the Debian
+GNU/Linux system (but may be used by others).

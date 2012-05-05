@@ -1,0 +1,105 @@
+				  Smart Cache
+				  ===========
+
+	      full featured Open Source HTTP proxy caching server
+		      Copyright (c) Radim Kolar 1998-2009
+                         
+Copyright
+=========
+
+Smart Cache Open Source Software, copyrighted by Radim Kolar; There is NO
+warranty.  See 'copyright' file for details. You may distribute it and/or
+modify it under the terms of GNU General Public License version 2
+as published by the Free Software Foundation.
+
+Documentation
+=============
+Smart Cache manual in HTML format is in the ./html/ subdirectory.
+
+Quick Start
+===========
+
+1.
+ copy provided sample configuration files (*.cnf) from samples/ into 
+ main program directory with .class files.
+ 
+2. 
+ Edit scache.cnf and gc.cnf with ANY ASCII editor. Read comments inside.
+ If you don't understand what it does, doesn't change it.
+
+3.
+ You NEED to get something, which can run Java 5 applications, for
+ example JRE 5, JDK 1.5.
+
+4.
+ If you have missconfigured OS/2 box run `ifconfig lo 127.0.0.1` first.
+ 
+5.
+ invoke Smart Cache in program directory (contains *.class files):
+
+   with JDK: java -cp . -ms1m scache
+   with JRE: jre -ms1m -cp . scache
+
+How to run garbage collection:
+==============================
+
+Garbage collector DON'T RUN when specified cache size is reached. You
+must run it by hand. So, use some cron-like program for this task.
+
+ via JDK: java -ms1m scache -gc
+ via JRE: jre -ms1m -cp . scache -gc
+
+Note: Smart Cache has also other command line switches - use
+java scache -help to see it. 
+
+Logo
+==== 
+If you are happy Smart Cache user, you can put icon "Smart Cache NOW" on your
+web pages or make SC downloadable from your site.
+
+You can also tell other people about it, good place for doing it are
+some mailing lists.
+
+Mailing list
+============
+This program has mailing list 'scache-users' on server sourceforge.net.
+https://lists.sourceforge.net/lists/listinfo/scache-users
+
+Where to find a new versions
+============================
+Some on these sites may have outdated version.
+
+http://scache.sourceforge.net/                           (Homepage)
+http://hobbes.nmsu.edu/                            (Binary mirror, use search)
+http://ibiblio.org/pub/linux/apps/www/servers/           (Source code mirror)
+
+On Homepage you will find Smart Cache-enabled web batch downloader.
+
+Smart Cache is registered on http://freshmeat.net as project scache,
+you can subscribe there into new version announcements.
+
+Contacting author
+=================
+* See html manual section 6 for more information.
+
+* bug reports are VERY WELCOME, please follow instructions provided in
+  section 6.3. If you will follow it, there is a better probability
+  that bug will be fixed.
+
+* See html documentation section 6.4 for more informations about
+  sending feedbacks. If you want to register yourself, do it by sending
+  this information.
+  
+* See also TODO file.
+
+Radim Kolar
+
+Snail mail:
+
+Mr. Radim Kolar
+17.listopadu 2074
+440 01 Louny
+Czech Republic
+
+	      Hare Krishna, Hare Krishna, Krishna Krishna, Hare Hare, 
+		  Hare Rama, Hare Rama, Rama Rama, Hare Hare.

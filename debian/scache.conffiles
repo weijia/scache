@@ -1,0 +1,4 @@
+/etc/init.d/scache
+/etc/ppp/ip-up.d/scache
+/etc/cron.weekly/scache
+/etc/cron.daily/scache

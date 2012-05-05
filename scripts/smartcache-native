@@ -1,0 +1,33 @@
+#! /bin/sh
+#Start-up script for running Smart Cache native compiled scache
+#   PUBLIC DOMAIN - NO RIGHTS RESERVED
+
+if [ -z $SMARTCACHE_CFG ]; 
+then
+	SMARTCACHE_CFG=/etc/scache
+	
+	if [ -d $HOME/.scache ]; 
+	then
+	            SMARTCACHE_CFG=$HOME/.scache
+	else
+	  #do not allow root to run scache
+	  if [ `id -u` = 0 ]; then
+	     su -p proxy -c "$0 $*"
+	     exit
+	  fi
+	fi
+fi
+	
+#GO!
+umask 027
+
+#without class path, try run jar file directly
+if [ $SAYPID ]; then
+scache-native -cfgdir $SMARTCACHE_CFG $* &>/dev/null &
+else
+exec scache-native -cfgdir $SMARTCACHE_CFG $*
+fi
+
+if [ $SAYPID ]; then
+ echo $!
+fi

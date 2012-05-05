@@ -1,0 +1,362 @@
+<html>
+<head>
+<title>Smart Cache - Neaktualni Offline kopie byvale domovske stranky</title>
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000EF">
+<center>
+<h1>Smart Cache 0.40</h1>
+<font size="+2"><strong>Tento dokument jiz neni a nebude nadale aktualizovan, slouzi jen pro letme seznameni. Pouzijte
+<a href="../html/index.html">anglickou verzi</a> zahrnutou v distribucnim archivu, ktera je mnohem lepsi. Pripadne <a href="Win_install.html">Navod pro instalaci do MSIE</a> nebo <a href="bfu.html">navod pro BFU</a>.</strong></font>
+<br>
+<img src="../scachenow.jpg" width=88 height=31 BORDER=2 VSPACE=5 HSPACE=5 ALIGN=middle
+ALT="Smart Cache NOW!">
+</center>
+Varovani: Tato stranka je velmi hloupa, nemam cas ji predelavat na lepsi.
+V kazdem pripade je to jen Vase vec, zda si ji prectete nebo ne.
+<UL>
+<LI><a href="#uvod">Uvod</a>
+<LI><a href="#dialup">Jake vyhody prinese dial-up uzivatelum?</a>
+<LI><a href="#navod">Navod k pouziti</a>
+<LI><a href="#config">Konfigurace</a>
+<LI><a href="#faq">Casto pokladane otazky</a>
+<LI><a href="#chyby">Chyby a omezeni soucasne verze</a>
+<LI><a href="#plan">Planovana vylepseni</a>
+<LI><A href="#copy">Licencni podminky</a>
+</UL>
+<a name="uvod"></a>
+<h2>Uvod</h2>
+Smart Cache je plnohodnotny proxy cache server napsany v 100% pure Jave
+(vyzadovana Java 1.1). Server je zejmena je vhodny pro dial-up uzivatele,
+kterym nahradi interni diskovou cache browseru, ktera pracuje pomalu a neefektivne.
+Server byl optimalizovan pro rychlost
+a minimalni spotrebu operacni pameti RAM. Produkt bezi docela rychle - na 486/33
+pod operacnim systemem OS/2 (JIT off) obslouzi 350 stranek/minutu (jeden browser potrebuje
+priblizne 50 requestu/min),
+pokud jej pouziva jen jeden uzivatel, staci mu pro vlastni cinnost okolo 600 kB RAM + pamet
+pripadajici na vlastni rezii JVM.
+
+<P>Smart Cache vychazi ze dvou nejznamejsich proxy cache - Squid a CERN, pricemz
+z kazde prebira ty nejlepsi vlastnosti. Produkt byl napsan protoze jsem nenasel
+zadnou dostatecne inteligentni cache, ktera by mne vyhovovala, protoze jsem nenasel dosud zadnou
+pouzitelnou proxy cache v Jave a protoze jsem potreboval specialni
+proxy cache pro off-line browsing.
+<P>
+Dalsi informace
+o tomto produktu najdete v clanku v <A HREF="http://netmag.cz/98/13/scache.html">NetMagu</a>,
+informace o <b>Web forwardingu</b> a vyuziti (a nastaveni) tohoto produktu jako Web forwarder najdete 
+<A HREF="http://netmag.cz/db/L19980630075506.hsn.html">zde</a>.
+<a name="dialup"></a>
+<h3>Idealni pro dial-up uzivatele!</h3>
+<P>Nejvetsi prinos pro dial-up uzivatele oproti interni cache v browseru
+spociva v:
+<UL>
+<LI>Moznost zablokovani definovanych URL - zejmena vhodne pro zablokovani
+reklamy
+<LI>Moznost nahrazovat blokovane reklamy vasim obrazkem - JE TO UPLNE SUPER
+ZABAVA!
+<LI>Moznost pouzivani uzivatelem definovanych redirectu a moznost tak
+eliminovat vicenasobne nahravani objektu, pokud ma server vice aliasu
+<LI>Moznost vytvareni vlastnich "domen" napr. pro vasi homepage. Zkuste treba:<br>
+Redirect http://moje.home.page/* http://www.geocities.com/XXX/1213/* . Tez je
+to dobre pro vytvareni aliasu pro casto vami navstevovane stranky.
+<LI>Lepsi funkcnost nez interni cache prohlizece. Netscape navigator napriklad
+velmi casto ztraci reference na nacachovane soubory a tak musite casto
+nahravat objekty ze site i presto, ze objekt mate jiz ulozen v cache
+<LI>Vetsi rychlost nez interni cache prohlizece zejmena pri vetsim objemu ulozenych dat
+<LI>Vzhledem k <I>CERN-style</I> ukladani souboru se cache snadno prohledava
+<LI>Ulozene soubory neobsahuji HTTP hlavicky - lze je tedy v pripade 
+potreby ihned pouzit
+<LI>Cachovani dynamicky generovanych stranek a stranek obsahujicich cookies.
+Uz nikdy nebudete cekat pri go-back!
+<LI>Moznost dohrati stranky do cache, pokud date v browseru stop. Pochopitelne
+i to lze konfigurovat (direktiva quick_abort).
+<LI>Cache pracuje i pokud jste offline. Misto chybovych hlasek vraci
+nacachovane stranky - muzete si proto vklidu offline vsechny stranky
+prohlednout a to dokonce i vcetne pocitadel a podobnych obvykle necachovanych
+objektu.
+<LI>Velmi dobre konfigurovatelne odmazavani starych objektu (-gc)
+</UL>
+<a name="navod"></a>
+<h3>Navod k pouziti</h3>
+K dispozici je nyni i alternativni navod, ktery byl napsan
+uzivatelem operacniho systemu Windows a je specialne
+urcen prave pro tyto uzivatele. Dokument se jmenuje
+<I>,,<a href="bfu.html">Navod pro instalaci a uzivani Smartcache pro
+normalni uzivatele (bfu)</a>"</i>.
+<br>Rada: Pokud nevite, co to znamena
+BFU tak jste BFU a navod se vam jiste bude libit.
+<p>
+Uzivatele systemu Windows 95 mohou ziskat balik 
+<a href="http://members.xoom.com/smartcache/">"Smart Cache for Windows"</a>,
+coz je Smart Cache opatrena grafickym instlacnim programem. Zda funguje, o
+tom nemam poneti.
+<p>Dalsi utilita pro uzivatele OS Windows je
+<a href="http://www.volny.cz/martin.konicek/scache.htm">zde</a>. Taky nemam
+ani poneti o tom, zda funguje.
+<UL>
+<LI>Pro spusteni produktu musite mit nainstalovanu Javu (JDK, JRE). Interni Java z www 
+prohlizece se neda pouzit.
+JDK si muzete nahrat <a href="http://java.sun.com/products/jdk/1.1/index.html">zde</a>.
+Misto JDK lze pouzit i JRE, ktere je mensi, protoze
+na rozdil od JDK neobsahuje vyvojove nastroje pro Javu. Tyto vyvojove nastroje
+nejsou nutne pro spousteni aplikaci napsanych v Jave a pokud tedy nechcete
+v Jave programovat, bude vam JRE stacit. JRE je k dispozici
+<a href="http://java.sun.com/products/jdk/1.1/jre/index.html">zde</a>.
+Produkt nelze spustit s Javou 1.0.X
+<LI>Rozpakujte distribucni zip soubor (scache.zip) do nejakeho prazdneho adresare.
+Pro rozbalovani musite pouzit neco, co umi takzvana "dlouha jmena", protoze
+soubory maji koncovky *.class a *.cnf.
+<li>prekopirujte dodane vzorove konfiguracni soubory z adresare samples o adresar vys.
+<LI>Prohlednete si a pripadne upravte konfiguracni soubory <i>scache.cnf</i>
+a <i>gc.cnf</i> dle potreby.
+<LI>V prohlizeci nastavte jako proxy server pro http protokol (jine nejsou
+a pravdepodobne ani nikdy nebudou podporovany) vas pocitac (tedy IP adresu 127.0.0.1)
+a port, na kterem bezi cache - prednastaveno je to na 8080.
+<LI>Cache se spousti prikazem <B>java scache</B>, ktery provedete v adresari,
+kde je nainstalovana (*.class). Pokud chcete minimalizovat spotrebu pameti ram pro cache
+(doporuceno) pridejte jave parametr -ms1m tedy prikaz bude vypadat <B>java -ms1m scache</B>.
+<LI>
+Pokud pouzivate misto plnohodnotneho JDK mensi balik - Java runtime JRE, bude pouzit prikaz
+pro spusteni zacinat <b>jre -cp .</b> misto <b>java</b>. Dalsi parametry zustavaji stejne.
+V prostredi JRE spustite tedy Smart Cache prikazem <B>jre -cp . -ms1m scache</b>.
+Prikaz je pochopitelmne nutne provadet v adresari, kde jsou nainstalovany programove
+(*.class) a konfiguracni (*.cnf) soubory.
+<LI>Cache se zastavuje pomoci indikacniho souboru (viz <I>shutdown_flag</I> v konfiguraci).
+Po vytvoreni tohoto souboru se cache korektne ukonci, jakmile to bude mozne (
+zadne neprobihajici transakce). Soubor muze mit libovolny obsah, testuje se jen
+jeho existence. Obvykle (Unix) se pro vytvoreni souboru pouziva prikaz <I>touch</I>,
+pripadne (Win) <I>echo &gt; jmenosouboru</I>. Pokud je to na vas moc slozite, mackejte
+CTRL-C (vice viz <a href="#faq">FAQ</a>) a nelamte si s tim hlavu. 
+<LI>Pokud vase cache zabira jiz mnoho mista na disku je zadouci spustit
+garbage collection, coz z ni smaze stare soubory a zmensi ji na pozadovanou
+velikost. GC se konfiguruje
+v souboru <I>gc.cnf</i> Pravdepodobne jedina vec, kterou budete potrebovat
+zmenit je pozadovana velikost cache v MB. Pote spustite GC pomoci
+<b>java scache -gc</b> Soucasti GC je i kontrola integrity cache, takze
+-killunref jiz nemusite pouzivat.
+<LI>Vzhledem k DNS caching "feature" JVM musite (cti silne doporucnovano)
+cache restartnout pokud browsite offline a nahodite modem a chcete browsit
+on-line. Tato komedie neni nutna, pokud pouzivate nadrazenou proxy cache 
+(direktiva http_proxy), ktera je zadana <b>IP adresou</b>. Restart muzete
+v tomto pripade provest stisknutim CTRL-C, bez rizika ztraty dat.
+</UL>
+<a name="config"></a>
+<h3>Konfigurace produktu</h3>
+Produkt je konfigurovan pomoci konfiguracnich souboru <i>gc.cnf</i> a 
+<i>scache.cnf</i>. Tyto konfiguracni soubory jsou textove a pro jejich
+editaci se pouziva jekykoliv ASCII editor, pod Windows je to napr. Notepad.
+V obou konfiguracnich souborech jsou nastaveny rozumne (moje) hodnoty, takze
+pokud do detailu moc nevidite, nemusite vetsinu menit. Nasledujici vycet
+direktiv neni kompletni, oznacuje jen ty ktere budete pravdepodobne nuceni
+zmenit.
+<P>
+<DL>
+<DD><b>cacheroot</b>
+<DT>Adresar, do ktereho se ukladaji cachovane soubory. 
+Je zadouci, aby mel tento adresar co nejkratsi jmeno. Umistete ho tedy
+do root adresare nejakeho disku (napr. c:\cache ). Jmeno adresare nesmi
+(cti nebyla testovana funcknost)
+koncit znakem \ nebo / . Tento adresar slouzi pro ukladani
+nacachovanych dat a nikoliv pro ulozeni vlastniho programu (*.class). Pokud
+nastavite cacheroot na adresar, kde mate nainstalovanu smart cache, pravdepodobne
+velmi rychle o ni prijdete (pri GC).
+
+<DD><b>http_proxy</b>
+<DT>Pokud pouzivate proxy cache vaseho ISP pro urychleni pristupu k internetu,
+zadejte zde jeji jmeno (IP adresu) a cislo portu oddelene
+mezerou.
+Velmi se doporucuje pouzit IP adresu misto DNS jmena! IP adresu zjistite
+napriklad prikazem ping.
+<P>
+Pouziti proxy cache vaseho Internet providera je velmi doporucovano, protoze
+pokud se budete chtit podivat na stranku na kterou pred nedavnem nejaky jiny
+dial-up uzivatel dival, bude tato stranka nahrana z proxy serveru, coz
+je nekolikanasobne rychlejsi.
+<br>
+Priklad (nastaveni na cache komercni casti cesnetu):<br>
+http_proxy 194.50.6.6 3128
+
+<DD><b>shutdown_flag</b>
+<DT>Jmeno souboru indikujiciho pozadavek na zastaveni cache.
+
+<DD><b>Cache_size</b> (gc.cnf)
+<DT>Velikost cache v MB. Jako minimalni rozumna hodnota se doporucuje
+25. Pochopitelne zde plati pravidlo, ze cim vice tim lepe, protoze
+zmensit se do da vzdycky.
+
+<DD><b>Urlmask</b> (gc.cnf)
+<DT>Nastavuje, ktere objekty se maji odmazavat rychleji pri Garbage Collection
+a ktere si chcete
+v cache podrzet delsi dobu. Pokud si napriklad radi off-line prohlizite
+NetMag, tak nastavenim:<br>urlmask http://netmag.cz/* /100<br>dosahnete
+toho, ze zustane obsah NetMagu v cache 100x dele, nez by tam normalne
+zustal.
+</DL>
+<h3>Propagace produktu</h3>
+Pokud tento program pouzivate a libi se vam, tak si umistete
+na vasi stranku ikonku 
+<img src="../scachenow.jpg" width=88 height=31 BORDER=2 VSPACE=5 HSPACE=5 ALIGN=middle
+ALT="Smart Cache NOW!"> a odkaz na
+nasi stranku nebo rovnou prekopirujte cely distribucni archiv. 
+Mozna tim ucinite nekoho stastnejsim.
+Dalsi misto, kde muzete SC propagovat jsou ruzne diskuzni skupiny,
+muzete ji nahrat do anonymnich archivu, adresaru softwaru atd.
+<a name="faq"></a>
+<h3>Casto pokladane otazky</h3>
+<DL>
+<DT><B>Jak minimalizuji spotrebu operacni pameti pro cache?</b>
+<DD>pomoci parametru -ms1m predaneho Java interpretru. Cela prikazova radka
+bude tedy vypadat:<BR> <I><B>java -ms1m scache</b></I><BR><BR>
+<DT><B>Je mozne pouzit tuto cache pro vice pocitacu ci pro pocitace pripojene
+k internetu pevnou linkou?</b>
+<DD>Ano, nastavte BindAddress na *
+
+<DT><B>Pouzivam dial-up a jsem soucasne pripojen i na firemni LAN sit. Je mozne aby se nekdo
+zvenci dostal pres tuto cache na nasi firemni sit?</b>
+<DD>Od verze 0.22 uz ne. Ovsem pokud si nastavite BindAddress na *, tak to mozne je.
+V tomto pripade ji doporucuji bloknout directivou fail nebo nastavit BindAddress na
+intranetovou adresu. Pokud nerozumite o co go, tak se zeptejte nekoho kdo zna Unix.
+
+<DT><B>Proc je tedy zduraznovano pouziti cache pro dial-up?</b>
+<DD>Pro dial-up uzivatele je tento produkt bezkonkurencne nejlepsi, jaky si mohou
+poridit.
+<DT><B>Je tento proxy server lepsi nez konkurencni servery?</b>
+<DD>Smart Cache je lepsi nez interni cache apache httpd, CERN httpd a Microsoft
+proxy server. V soucasnosti je Squid jen mirne lepsi co do konfigurovatelnosti
+nekterych veci (napr. umoznuje vice nadrazenych cache), ale v praxi jeho lepsi konfigurovatelnost
+nema zadny velky vyznam.
+Smart
+Cache je zase lepsi v tom, ze cachovanim necachovatelnych objektu (napr. pocitadel)
+snizuje zatez linky. Finalni verze Smart Cache bude schopna Squidu co do vlastnosti
+konfigurace plne konkurovat. Krome toho nektere casti Smart Cache (napr. garbage
+collector) jsou mnohonasobne lepsi nez u Squida.
+
+<DT><B>Jak mam odmazavat stare soubory, kdyz to zatim cache neumi?</b>
+<DD>Od verze 0.30 to jiz umi pomoci prepinace -gc, pokud nechcete pouzivat GC, tak ctete dale.<br>Nejvice se zatim osvedcilo pouzivani prikazu find. Pokud mate unix-like
+system odmazte stare soubory takto:<BR>
+find /cachedir -atime +XX -print | xargs rm<BR>, kde /cachedir je adresar, kam
+si uklada cache sve soubory a +XX je pocet dnu, ktere chcete v cache nechat.
+Po teto akci je doporucovano jeste smazat soubory, na ktere neni zadna reference. (viz navod -killunref)
+<DT><b>Kde sezenu potrebne unix-like utility pro Windows?</b>
+<DD>Muzete zkusit <a href="http://www.cygnus.com/misc/gnu-win32/">GNU Win32</a>
+nebo <a href="http://www.research.att.com/sw/tools/uwin/">UWIN32</a>.
+<DT><B>Pokud pouzivam proxy cache, mam zakazat cache v browseru?</b>
+<DD>Zalezi jakou cache mate na mysli. Napr. Netscape Navigator ma dva druhy cache:
+<I>Memory cache</i>, kterou nezakazujte a nastavte ji minimalne na 1MB a <i>Disk cache</i>.
+Disk cache se doporucuje pro dosazeni maximalniho
+vykonu uplne zakazat (nastavit velikost na 0).
+Na platforme Unix se doporucuje browseru nejakou malou diskovou cache nechat,
+protoze k ni pristupuje rychleji.
+<DT><B>Proc je Microsoft Explorer s cache pomalejsi misto rychlejsi?</b>
+<DD>MSIE <b>obcas</b> pouziva z nejakeho mne neznameho duvodu pri nastavenem proxy
+serveru jen jedno sitove spojeni. Tudiz nenahrava objekty paralelne, ale 
+seriove, coz trva dele.
+<DT><B>Co znamena hlaska Missing object pri operaci -gc/killunref ?</b>
+<DD>Znamena to, ze v ridicim souboru je reference na objekt, ktery nebyl na disku
+nalezen. Nejbeznejsi pricina je, ze pri downloadu tohoto objektu doslo k chybe,
+kterou cache specialne neobsluhuje a tak na nej reference zustala. Touto chybou muze
+byt napriklad shutdown cache, pokud jsou aktivni jeste nejaka spojeni.
+Dalsi moznost je,
+pokud provadite tuto operaci na bezici cache a objekt se prave nahrava.
+Vzhledem k tomu, ze ridici soubory jsou u bezici cache cachovany v pameti, tak
+smazani reference z ridiciho souboru na disku nijak nenarusi funkci cache -
+az se objekt donahraje, tak se zapise na disk a do ridiciho souboru bez ohledu
+na to, zda v nem jiz byl ci ne.
+<DT><B>Co znamena hlaska orphan object pri operaci -gc/killunref ?</b>
+<DD>Znamena to, ze byl nalezen soubor, na ktery neni zadna reference v ridicim
+souboru. Obvykle to jsou temporary soubory, ktere se vytvari pri downloadu
+objektu ci prazdne .cacheinfo soubory.
+<DT><B>Nemohu se nalogovat na Java Developer Connection. Proc?</b>
+<DD>Pokud si chcete prohlizet JDC. Nalogujte se na jeho homepage.
+Potom bude server fungovat bez problemu.
+Problem je nasledujici. Chcete si prohlizet dokument a server, zjisti, ze jste
+se jeste neprihlasili. Posle proto redirect na login stranku. Tento redirekt
+cache nacachuje, coz zpusobi prave ten problem, protoze kdyz se nalogujete,
+tak vas na login formular neposle znovu server, ale cache. Toto je zatim
+jediny znamy negativni dopad cachovani redirektu.
+<DT><B>Bude umet cache dial-on demand, aby stahla objekt, kdyz neni v cache?</b>
+<DD>Naprogramovat to neni problem, ale takoveto pouziti neni vylozene dobry napad.
+Takze zatim ne.
+
+<DT><B>Chci pouzivat cache pro eliminaci reklam, ale nechci ji pouzivat misto
+interni cache browseru, protoze zatim neumi garbage collection. Jde to?</b>
+<dd>Jednak GC jiz umi, ale pokud to chcete, tak napiste do konfiguracniho souboru radku <b>NoCaching *</b> -
+zadne objekty nebudou trvale na disku uchovavany.
+
+<DT><B>Proc neni implementovana GNU regexp knihovna nad operacemi s URL?</b>
+<DD>Protoze je tato knihovna jednak vetsi nez cely dosavadni produkt a jednak
+je pomala.
+
+<DT><b>Kolik uzivatelu pouziva tento produkt?</b>
+<DD>No vzhledem k tomu, ze chodi porad vice a vice dotazu, rekl bych, ze je jich
+vic nez dost.
+
+<DT><b>Jsou spokojeni s produktem?</b>
+<DD>Je zajimave, ze jsou s nim pomerne dost spokojeni. Tedy alespon ti, kteri
+mi napsali. Obdrzel jsem zatim jen jednu negativni (anonymni) stiznost,
+ktera se tykala celkove debility tedle stranky, coz je v poradku - stranka
+je debilni. Takze muzu rici, ze pokud BFU prezije ve zdravi nekolikamegabajtovy
+download JRE/JDK
+a projevi alespon tolik inteligence, aby to spustil, pravdepodobne se mu to
+bude libit. Krom toho tu mame <a href="bfu.html">navod specialne pro BFU</a>.
+
+<DT><b>Nechce se mne tahat JRE. Je k dispozici nekde nezavisla recenze?</b>
+<DD>O zadne v cestine nevim. Krome toho nejake pocitacove casopisy se ptaji
+ctenaru co chteji na CD, tak jim tam napiste, ze chcete JRE + scache.zip. 
+Zkuste kontaktovat nejaky casak, at vam
+o tom napise. Vzhledem k rychlosti vydavani cisel papirovych casaku, bude
+ten download JRE kratsi zalezitost. Anglicky asi ano, protoze predpokladam, ze
+kdyz necemu davaji oceneni, tak o tom asi neco napisi.
+
+<DT><b>Neni to skoda, ze je produkt napsany v Jave?</b>
+<DD>Rekl bych ze ne. Vetsina uzivatelu jej provozuje pod Win* systemy, pricemz
+ja pod Win* systemy zasadne neprogramuji. Kdyby nebyl napsan v Jave, nemohli
+by jej pouzivat, takze z jejich pohledu to je urcite plus. 
+
+<DT><B>Nebude k dispozici C/C++ verze?</b>
+<DD>
+O prepsani
+do C/C++/Objective C ani neuvazuji. Pokud to nekoho trapi, necht si to
+prepise sam - zdrojaky tu jsou.
+
+<DT><b>Umi produkt delat transparent-proxy</b>?
+<DD>Umi. Netreba nic vice konfigurovat. 
+Pochopitelne, ze si musite vhodne nakonfigurovat router.
+
+<DT><B>Muze se provadet GC na bezici cache?</b>
+<DD>Ano.
+
+<DT><b>Jsem pripojen k Internetu pouze pres proxy server. Smart Cache funguje
+normalne, ale nefunguji AdBusteri a test aktualni verze</b>
+<DD>pridejte JVM (pred scache) tyto parametry:<br>-Dhttp.proxyHost=192.168.1.26 -Dhttp.proxyPort=80
+<br>
+Prvni je IP adresa vaseho proxy serveru a to druhy je port na kterem bezi.
+</DL>
+<a name="chyby"></a>
+<h3>Omezeni a chyby</h3>
+<UL>
+<LI>HTTP/0.9 servery nejsou podporovany, HTTP/0.9 klienti vsak ano. O
+podpore HTTP/0.9 serveru se zatim ani neuvazuje. 
+<LI>Na platforme OS/2 havaruje (nekdy) pri zapnutem JIT kompilatoru. Toto je chyba
+IBM a ne tohoto produktu. Pokud je to zrovna vas pripad, vypnete proto pred spustenim cache JIT kompilator
+pomoci prikazu:<BR><B>SET JAVA_COMPILER=lopata</B>. Krome toho JIT kompilator
+nezrychli scache jiz temer vubec, protoze je rucne zoptimalizovana.
+<li>Vice informaci je v anglicke dokumentaci.
+</UL>
+<a name="plan"></a>
+<h3>Budoucnost produktu</h3>
+Planovane upravy jsou:
+<UL>
+<li>(mozna) multiple parent proxy
+<li>Integrace moznych <i>source patches</i> obdrzenych od uzivatelu.
+<li>Ma jeste nekdo nejaky napad? 
+</UL>
+<a name="copy"></a>
+<h3>Podminky pro pouziti</h3>
+Pouziti a sireni tohoto programu jako takoveho neni nikterak omezeno. 
+Modifikace produktu ci jeho integrace do jineho produktu
+je vsak mozna pouze pri dodrzeni podminek v <a
+href="http://www.gnu.org/copyleft/gpl.html">GNU Public License verze 2</a>
+nebo pozdejsi. Vice informaci najdete v souboru COPYRIGHT.
+</body>
+</html>

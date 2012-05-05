@@ -1,0 +1,11 @@
+# URL filter set up for Smart Cache - ENABLED URL list. Autoreloaded by SC.
+# 
+# This file marks `good URL`, which are always allowed even if fail directive
+# (configured in fail.cnf file) disables them.
+#
+# place here URL masks (one per line) same as arguments to
+# Pass directive in scache.cnf, see fail.cnf for some examples.
+#
+# Smart Cache has support only for '*' wildcard, but you can use it in pattern
+# more times.
+#

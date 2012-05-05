@@ -1,0 +1,90 @@
+#! /bin/sh
+# /etc/init.d/scache - Control script for Smart Cache
+#
+# Written by Miquel van Smoorenburg <miquels@cistron.nl>.
+# Modified for Debian GNU/Linux by Ian Murdock <imurdock@gnu.org>.
+# Modified for Debian by Christoph Lameter <clameter@debian.org>
+# Modified for Smart Cache by Radim Kolar
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/bin/smartcache
+CACHEDIR=/var/cache/scache
+CACHEUSER=proxy
+PIDFILE=/var/run/scache.pid
+LOGFILE=/var/log/scache.log
+LOGFILE2=/var/log/scache-stats.log
+export PIDFILE
+
+test -x $DAEMON || exit 0
+cd /
+
+case "$1" in
+  start)
+   if [ -r $PIDFILE ]; then
+       if [ -d /proc/`cat $PIDFILE` ]; then 
+         echo "HTTP proxy cache server Smart Cache is allready running."
+	 exit 0
+       fi
+    fi
+    #no PID file or not running, clean possible flags
+    rm -f /var/run/scache*
+    echo -n "Starting HTTP cache proxy server: Smart Cache"
+    #check for TYA
+    if [ -r /usr/lib/libtya* ]; then
+      echo -n " (using TYA JIT)"
+      export JAVA_COMPILER=tya
+      export THREADS_TYPE=green
+    fi
+    #set Java to non-gui mode
+    export NS_JAVA=true
+    export SMARTCACHE_CFG=/etc/scache
+    
+    #check and recreate cachedir /var/cache/scache
+    if [ ! -d $CACHEDIR ]; then
+      install -m 770 -d -o $CACHEUSER -g $CACHEUSER $CACHEDIR
+    fi
+    umask 027
+    touch $PIDFILE $LOGFILE $LOGFILE2
+    chown $CACHEUSER $PIDFILE $CACHEDIR $LOGFILE $LOGFILE2
+    chmod 770 $CACHEDIR
+    /sbin/start-stop-daemon --background --quiet --start --startas $DAEMON --pidfile $PIDFILE --chuid $CACHEUSER --make-pidfile
+    sleep 6
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping HTTP cache proxy server: Smart Cache"
+    /sbin/start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+    #clear flags
+    rm -f $PIDFILE
+    rm -f /var/run/scache*
+    echo "."
+    ;;
+  reload)
+    echo "When smartcache runs, changed configuration files are auto-reloaded."
+    echo "Restart is needed ONLY after changing main configuration file (scache.cnf)."
+    echo "If you changed this file, use restart option instead."
+    ;;
+  restart|force-reload|nice-restart)
+     echo -n "Restarting HTTP cache proxy server: smartcache"
+     #stop it
+     start-stop-daemon --stop --quiet --pidfile $PIDFILE >/dev/null
+     if [ $? -gt 0 ]; then
+       echo -n " (not running"
+       if [ "$1" != "nice-restart" ]; then
+           echo -n ",starting)"
+	 else
+	  echo ",no restart)."
+	  exit 0
+      fi;
+     fi;
+     sleep 2
+     sh $0 start > /dev/null
+     echo "."
+    ;;
+  *)
+    echo "Usage: /etc/init.d/scache {start|stop|reload|restart|force-reload|nice-restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

@@ -1,0 +1,25 @@
+#! /bin/sh
+#Weekly script for Smart Cache
+#tested with GNU Debian linux
+# This file is public domain. No rights reserved.
+
+DAEMON=/usr/bin/smartcache
+CACHEDIR=/var/cache/scache
+LOGFILE=/var/log/scache-gc.log
+
+if [ ! -x $DAEMON ]; then
+  exit 0;
+fi
+
+if [ ! -d $CACHEDIR ]; then
+  exit 0;
+fi
+
+cd $CACHEDIR
+
+touch $LOGFILE
+chown proxy $LOGFILE
+chmod 644 $LOGFILE
+
+umask 027
+su proxy -c "$DAEMON -gc 2>/dev/null >> $LOGFILE"

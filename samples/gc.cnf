@@ -1,0 +1,180 @@
+#Smart Cache Garbage collection configuration file.
+#
+#Garbage collector is a very tweakeable, you can you -fakegc for
+#simulating GC and testing your changes.
+#
+#IMPORTANT:
+# garbage collection is NOT started when specified cache size is reached
+# you must run it by hand -> java scache -gc [gc-interval]
+#
+# Many users do not bothers with GC and deletes all cache by hand,
+# when it grows too large. Real nerds makes quick reformat/mkfs of
+# partition to avoid excesive disk i/o.
+
+# Cache size. Bigger IS better. Diskspace is cheap
+# Running GC on bigger cache takes more time. For most people running
+# it once per week is enough. In that case, lowering cache_swap_low helps.
+cache_swap_size 500MB
+
+#size of one allocation unit (also known as cluster or block)
+# OS/2 with HPFS filesystem - 1024 bytes
+# Linux with ext2 filesystem - 1024 bytes
+#            ext3 filesystem - 4096 (in most cases)
+#            reiserfs mounted with notail - 4096. CLEAR PERFORMANCE WINNER!
+# FAT/VFAT,FAT32 Filesystem - run chkdsk/scandisk
+# NTFS filesystem - 4096
+#This is needed for computing the real diskspace used, not just a sum of
+#individual file's size, which is smaller.
+block_size 1024B
+
+#  TAG: reference_age
+#	As a part of garbage collection Cache performs Least Recently
+#	Used removal of cached objects.  The LRU age for removal is
+#	computed dynamically, based on the amount of disk space in
+#	use.  The 'reference_age' value defines the maximum LRU age.
+#	For example, setting reference_age to 7 will cause
+#	objects to be removed if they have not been accessed for a week
+#	or more. 
+#       If set to 999999d LRU removal is disabled, and objects
+#	will be removed only when disk usage is over the high water
+#	mark. This is recommended if you want to use offline browsing.
+#       The default value is one year.
+#
+#	Specify a time here.  For example:
+#		reference_age 1y
+#
+reference_age 2y
+
+#average directory_size in bytes. Average directory size is average diskspace
+# wasted by creating a average directory with some files inside.
+#
+# You can see how many bytes are used (wasted) after creating directory with
+# some 10 zero length files. If your OS reports real directory sizes this value
+# is ignored.
+#
+# WARNING: this is not the same value as GC prints in SUMMARY report.
+#
+average_directory_size 2048B
+
+#  TAG: cache_swap_low  (percent, 0-100)
+#  TAG: cache_swap_high (percent, 0-100)
+#	The low- and high-water marks for cache LRU replacement.
+#	LRU replacement begins when the high-water mark is reached
+#	and ends when enough objects have been removed and the low-water
+#	mark is reached. 
+#
+#       Defaults are 90% and 95% and in most cases there is no
+#       need to change it.
+#       If you have a large cache, 5% could be hundreds of MB. 
+#       If this is the case you may wish to set these numbers closer together.
+#
+#	
+cache_swap_low 90
+cache_swap_high 95
+
+#gcloglevel. How verbose report from GC you want? If you run GC from cron
+#which emails output use 1 or 2.
+#  0 - Off
+#  1 - Basic progress messages
+#  2 - Stats included
+#  3 - Cache consistency errors included
+#  4 - List of deleted files included
+#  5 - Debug info included
+gcloglevel 2
+
+#remove all objects bigger than
+maximum_object_size 4mb
+
+#remove all objects smaller than
+minimum_object_size 0b
+
+#size of memory array for holding temporary objects during garbage collection
+gcarraysize 12000
+
+# GC is LRU based. Smart Cache doesn't make difference if object
+# is accessed off-line or on-line.
+#
+# Following commands will help you to fine tune GC
+#
+# Possible LRU modifications. 
+#  Note: There is -NO SPACE- between number and operator.
+#
+# +20  .. make object 20 days older
+# -20  .. make object 20 days younger
+# *2.0 .. make object 2 times older
+# /2.0 .. make object 2 times younger
+# =2   .. if object is 2 or more days old, delete it immediately (even if cache size is good)
+#
+# NOTE: Smart Cache has some builtin defaults. If you do not want to use
+#       some kind of object class in GC, set modifier to *1
+
+#large_object_penalty XXXX YYY ZZZZ QQQ
+# - if cached object is bigger than XXXX bytes make YYY and make QQQ for every
+# ZZZZ bytes over XXXX. Only one line is allowed. Default is nothing.
+# 
+large_object_penalty 200k *2.5 50k +5
+
+#small_object_penalty XXXX YYY ZZZZ QQQ
+# if cached object is smaller than XXXX bytes, make YYY and make QQQQ for
+#   every ZZZZ  bytes under XXXX size
+# Some people wants to expire small objects faster.
+small_object_penalty 4k *3 512b +10
+
+#Objects can be penalized by at most ONE penalty rule and ONE urlmask rule
+#Priority of penalty rules is the same as order in this file
+
+#Penalty for negative cached objects (HTTP RC>=400)
+#there are errors messages (not found, forbidden and so on..)
+negative_cached_penalty *8
+
+#if objects has expired date and now are expired. If undefined - 
+#expired objects are always removed from cache.
+expired_penalty *5
+
+#If objects are expired, but can be checked with If-Modified-Since request
+# (some servers generates expire info just for their fun because
+#   wants more hits.)
+expired_but_checkable_penalty *2.0
+
+#Some objects are not document or files, but redirects to another
+#location. They should be deleted faster since they are small and can
+#be loaded quickly. Most of them are used for adverts and changes quickly
+redirect_penalty *2
+
+#if object can not be checked with If-Modified-Since request
+#HINT: if you don't plan ever use this cache for off-line browsing use some
+#big value (i.e. *20) so uncheckable object will be early deleted
+not_checkable_penalty *3
+
+# URL masks. Order is important; First matching mask stops the urlmasks
+#  processing. When you are want to match any protocol for given
+#  host please include string `://` in mask, so SC can recognize it
+#  correctly.
+#    *://www.starwars.com/* will work while */www.starwars.com/*  will not.
+
+case_sensitive_matching yes
+# Are URL tests case sensitive?
+#  yes/no. Yes is MUCH faster.
+#
+# NOTE: Hostnames are always converted to lowercase and because
+#  in this example we use expire by hostnames - turning on case sensitive match
+#  will speed up the GC. You can of course turn on this case sensitive check
+#  for some URLs (see example)
+
+#expire CGI's output somewhat faster
+urlmask *?* *2
+
+#example of use case_sensitive_matching for just one URL
+case_sensitive_matching no
+urlmask *cgi* *2
+case_sensitive_matching yes
+
+#Expire Sun's Java site 2 times slower
+#urlmask *java.sun* /2
+#and Javaworld 5 times slower than other sites
+#urlmask http://www.javaworld.com/* /5
+
+#remove cached files received by FTP protocol after 7 days
+#urlmask ftp://* =7
+
+## END OF FILE ##

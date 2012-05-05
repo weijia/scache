@@ -1,0 +1,29 @@
+# URL filter set up for Smart Cache - DISABLED URL list. 
+# This file is Autoreloaded by SC when changed.
+#
+# place here URL masks (one per line) same as arguments to
+# Fail directive in scache.cnf
+# Smart Cache has support only for '*' wildcard, but you can use it in pattern
+# more times.
+#
+# Look here if you get unwanted Forbidden by rule errors.
+# 
+# You can display which rule blocked the URL
+#   ( add line `trace_fail yes` to file scache.cnf )
+#
+
+#A very common locations of ADV BANNERS...
+http://ads.*
+http://ad.*
+http://adserver.*
+http://adforce.*
+*/ads/*
+*/advs/*
+*/adverts/*
+
+# If you like to change these URLs to 1x1 empty GIF (instead of Netscape's 
+#  broken image), add line:
+# errordocument 403 0 
+# into SCACHE.CNF (NOT HERE!!) 
+# You can replace it with any page or picture on the net, just enter
+#  URL instead '0' in errordocument 403...

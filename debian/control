@@ -1,0 +1,49 @@
+Source: scache
+Priority: extra
+Maintainer: Radim Kolar <hsn@users.sourceforge.net>
+Standards-Version: 3.5.2
+Build-Depends: sun-java5-jdk (>= 1.5.0), make, debiandoc-sgml, debhelper (>> 3.0.0), gcj-4.2
+
+Package: scache
+Section: contrib/web
+Architecture: all
+Depends: sun-java5-jre (>= 1.5.0) | java2-runtime, debconf (>= 1.0.0)
+Conflicts: scache-native
+Suggests: www-browser
+Description: HTTP-proxy cache with extra features
+ Smart Cache is pure Java, full featured caching proxy server.
+ Smart Cache has special support for off line browsing and allows
+ caching even normally uncacheable web objects. It also has highly
+ tuneable garbage collection.
+ .
+ Other features:
+  *  cookies filtering
+  *  web forwarding
+  *  URL blocking
+  *  URL redirecting
+  *  fake user-agent, referer or cookie headers
+  *  full loging
+  *  disk compression
+  
+Package: scache-native
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends} , ${misc:Depends}
+Conflicts: scache
+Suggests: www-browser
+Description: HTTP-proxy cache with extra features
+ Smart Cache is pure Java, full featured caching proxy server.
+ Smart Cache has special support for off line browsing and allows
+ caching even normally uncacheable web objects. It also has highly
+ tuneable garbage collection. 
+ .
+ This package is compiled with GCJ to native executable.
+ .
+ Other features:
+  *  cookies filtering
+  *  web forwarding
+  *  URL blocking
+  *  URL redirecting
+  *  fake user-agent, referer or cookie headers
+  *  full loging
+  *  disk compression

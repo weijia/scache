@@ -1,0 +1,4 @@
+#rewrite.cnf
+#This file has the same syntax as redir.cnf, but request redirecting is
+#performed only internaly by Smart Cache itself. Browser do not know that is
+#beeing redirected to new location.

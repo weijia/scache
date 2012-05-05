@@ -1,0 +1,42 @@
+Smart Cache COPYRIGHT information
+
+Smart Cache is Open Source software (see http://www.opensource.org/
+for description what Open Source is); you may distributed it and/or
+modify it under the terms of GNU General Public License version 2
+as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+A copy of the GNU General Public License is available as
+`/usr/doc/copyright/GPL' in the Debian GNU/Linux distribution or on
+the World Wide Web at http://www.gnu.org/copyleft/gpl.html.  You can
+also obtain it by writing to the Free Software Foundation, Inc., 59
+Temple Place - Suite 330, Boston, MA 02111-1307, USA.  Smart Cache was
+written from scratch by Radim Kolar hsn@cybermail.net 
+
+except:
+       1. HTUU.java, which has been rewrited from C to Java. 
+         Original HTTU.c is part of libwww library. COPYRIGHT 1995 BY: 
+	 MASSACHUSETTS INSTITUTE OF TECHNOLOGY (MIT), INRIA. 
+       2. Some portions of Smart Cache's code	 
+           copyrighted by Lesha Bogdanow boga@podolsk.ru
+           copyrighted by Karl-Heinz.Duesentrieb@gmx.de
+           copyrighted by Carsten Thorenz thorenz@hydromech.uni-hannover.de
+	   copyrighted by Achain achain@netlaputa.ne.jp
+           copyrighted by Monika Schilling
+           copyrighted by Hartmut Krafft
+	   copyrighted by Roman Trunov
+	   copyrighted by Polgar Istvan polgaris@hu.inter.net
+           copyrighted by Bastian Maerkisch
+	   copyrighted by Klaus Schirmanns sidki@t-online.de 
+       3. gnu.rex Regexp Java engine is LGPL copyleft @author Stepan Sokolov
+       4. WebConnection.java and ConnectionHandler.java
+             Copyright (c) 1998, 1999, 2000, 2001, 2002, 2003 Fredrik Widlert, 
+	     Robert Olofsson, Alexander La Torre, Håkan Andersson, 
+	     Nina Ödling, Vicky Carlsson, Malin Blomqvist, Linnéa Löfstedt
+	     and Radim Kolar.
+
+vim:set textwidth=70: Used for Vim (http://www.vim.org/)

@@ -1,0 +1,94 @@
+				  Smart Cache
+				  ===========
+			 plnohodnotny HTTP proxy server
+			autor (c) Radim Kolar 1998-2009
+                         
+Copyright
+=========
+
+Program Smart Cache je siren pod licenci Open Source Software, vlastnikem
+autorskych prav je Radim Kolar a ostatni; Na program se neposkytuje ZADNA
+ZARUKA, autor neni odpovedny za pripadne skody zpusobene pouzitim tohoto
+programu. Vice informaci najdete v souboru 'copyright'. Tento program muze byt
+pouzivan zdarma, bez omezeni. Muzete tento program take distribuovat a/nebo
+modifikovat podle licencnich podminek Obecne verejne licence GNU verze 2.
+
+Dokumentace
+===========
+Smart Cache manual v HTML formatu je v adresari ./html/ , strucna 
+ceska dokumentace je v adresari ./czech/. O kompletni ceske dokumentaci
+nebo vzorovych konfiguracnich souborech se pro maly zajem neuvazuje.
+
+Spusteni
+========
+
+1.
+ prekopirujte konfiguracni soubory *.cnf z adresare samples/ do hlavniho
+ adresare Smart Cache, kde jsou take soubory .class.
+ 
+2. 
+ Zmente textovym editorem dodane konfiguracni soubory podle potreby.
+
+3.
+ Sezente si software, ktery umi spoustet Java 5 aplikace (napr.
+ JRE 5, JDK 1.5 ) a nainstalujte ho. Dobre misto pro shaneni
+ tehto produktu je http://java.sun.com/javase/downloads/index.jsp
+
+4.
+ Program se spousti v adresari do ktereho jste rozbalili *.class soubory
+ prikazem:
+
+   v prostredi JDK: java -ms1m -cp . scache
+   v prostredi JRE: jre  -ms1m -cp . scache
+ 
+Udrzba a uklid dat
+==================
+Smart Cache umyslne automaticky neodmazava ulozena data, takze adresar
+s daty porad narusta. Pokud je chcete obcas promazat, spustte SC s
+prepinacem -gc, ktery uvedete na konec prikazove radky. Data lze take
+pripadne odmazavat rucne.
+
+Logo
+==== 
+Pokud jste spokojeny uzivatel tohoto programu, muzete si dat na svoji stranku
+ikonku "Smart Cache NOW". Muzete take seznamit s timto programem Vase pratele.
+
+Diskuzni skupina
+================
+K otazkam spojenym s timto programem byla vytvorena diskuzni skupina
+'scache-users' na serveru sourceforge.net.
+https://lists.sourceforge.net/lists/listinfo/scache-users
+
+Kde najit nove verze
+====================
+Nektere stranky nemusi mit vzdy aktualni verzi tohoto programu.
+
+http://scache.sourceforge.net/                           (Domovska stranka)
+http://hobbes.nmsu.edu (Binary distribuce, pouzijte funkci search 'scache')
+http://ibiblio.org/pub/linux/apps/www/servers/           (Source code mirror)
+
+Program je registrovan na http://freshmeat.net/ pod jmenem scache,
+pokud chcete byt informovani o novych verzich prihlaste se na tento
+server.
+
+Autor
+=====
+* pro vice informaci o kontaktu si prectete sekci 6 anglicke prirucky.
+
+* pokud najdete nejake chyby, dejte mi to vedet. Nasledujte pri tom prosim
+  proceduru v sekci 6.3 anglicke prirucky. Pokud ji alespon z casti dodrzite,
+  zvysi to nadeji na uspech, ze bude vami nalezena chyba odstranena.
+
+* pokud si chcete program zaregistrovat prectete si sekci 6.4 anglicke prirucky
+
+* prijima ruzne dary, vice informaci v souboru TODO.
+
+Radim Kolar
+
+Mr. Radim Kolar
+17.listopadu 2074
+440 01 Louny
+Czech Republic
+
+	      Hare Krisna, Hare Krisna, Krisna Krisna, Hare Hare, 
+		  Hare Rama, Hare Rama, Rama Rama, Hare Hare.

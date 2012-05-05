@@ -1,0 +1,16 @@
+# Cookies filter set up for Smart Cache
+#
+# enter domains which are allowed to receive cookies.
+# If domain has not allowed to receive cookies, cookie
+# will be deleted from request or optionally replaced
+# by fake cookie as defined in wafer option.
+#
+# Example: entering sun.com allows sending cookies to
+#   all sites which name ends *sun.com 
+#
+# DO NOT USE wild-cards (*) here!
+#
+#magic name 'all' allows sending cookie to any server
+#magic name 'none' disables sending cookies to any server
+#
+all

@@ -1,0 +1,13 @@
+=== debian-specific ===
+Man page for smartcache
+
+== done ==
+mazat log soubory pri purge
+nemazat konfiguraci pri purge pokud /usr/bin/smartcache existuje
+umask problem - asi chyba javy. Vytvari adresare vzdy s -rw pro ostatni.
+opravit smartcache pro jar
+opravit permissions pro cachedir
+remove /etc/scache on purge
+remove /var/cache/scache on purge
+debconf support
+rotated logifles support

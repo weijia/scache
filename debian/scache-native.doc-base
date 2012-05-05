@@ -1,0 +1,10 @@
+Document: smartcache-manual
+Title: Smart Cache Manual
+Author: Radim Kolar
+Abstract: This manual describes the configuration, installation and operation
+ of the Smart Cache proxy caching HTTP server.
+Section: Apps/Net
+
+Format: HTML
+Index: /usr/share/doc/scache-native/html/index.html
+Files: /usr/share/doc/scache-native/html/*.html

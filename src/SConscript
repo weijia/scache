@@ -1,0 +1,6 @@
+Import("env")
+
+classes=env.Java(target = '.',source = '.')
+
+#subdirs are not needed, scons builds them by default
+#env.SConscript(dirs=['gnu'])
