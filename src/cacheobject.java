@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.zip.GZIPOutputStream;
 import java.util.concurrent.atomic.AtomicInteger;
+import dk.safl.beanstemc.Beanstemc;
 
 public final class cacheobject{
 
@@ -614,6 +615,8 @@ final private void load_object(request r) throws IOException
  /* update object status */
  localname=ln;
  if(mgr.loglevel>3) System.out.println("Loaded: "+n+" (size="+size+" B)");
+ Beanstemc beanstalk_inst = new Beanstemc("127.0.0.1", 11300);
+ beanstalk_inst.put(dir.getLocalDir().getBytes());
  good=true;
  if(auto_compress>0) compress(9);
  if(!r.cacheable && save_noncacheable) {
