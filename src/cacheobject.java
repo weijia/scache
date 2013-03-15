@@ -28,11 +28,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.zip.GZIPOutputStream;
 import java.util.concurrent.atomic.AtomicInteger;
 import dk.safl.beanstemc.Beanstemc;
+import dk.safl.beanstemc.BeanstemcException;
 
 public final class cacheobject{
 
@@ -75,6 +77,37 @@ private cachedir dir;
 private String ctype;    /* Content-Type */
 private String encoding; /* Content-Encoding */
 private boolean good; /* good or aborted download ? */
+
+Beanstemc beanstalk_inst;
+
+void send_request(String local_path, request r)
+{
+	if(null == this.beanstalk_inst)
+		try {
+			this.beanstalk_inst = new Beanstemc("127.0.0.1", 8112);
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	 try
+	 {
+		 beanstalk_inst.use("scache_input_tube");
+		 String json_str = String.format("{\"cached_path\":\"%s\", \"url\":\"%s\"}", 
+				 local_path.replace("\\", "/"), r.URL);
+		 beanstalk_inst.put(json_str.getBytes());
+	 }
+	 catch(BeanstemcException e)
+	 {
+		 e.printStackTrace();
+	 } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
 
 cacheobject(String name, cachedir where)
 {
@@ -598,7 +631,7 @@ final private void load_object(request r) throws IOException
         }
  /* regen localname if needed */
  setInfo(r);
- if(localname==null || localname.equals(RESERVED)) 
+ if(localname==null || localname.equals(RESERVED))
 	 ln=genName(name);
  else
 	 ln=localname;
@@ -615,8 +648,7 @@ final private void load_object(request r) throws IOException
  /* update object status */
  localname=ln;
  if(mgr.loglevel>3) System.out.println("Loaded: "+n+" (size="+size+" B)");
- Beanstemc beanstalk_inst = new Beanstemc("127.0.0.1", 11300);
- beanstalk_inst.put(dir.getLocalDir().getBytes());
+ send_request(dir.getLocalDir()+ln, r);
  good=true;
  if(auto_compress>0) compress(9);
  if(!r.cacheable && save_noncacheable) {
@@ -705,8 +737,9 @@ final private void refresh_object(request r) throws IOException
                dir.dirty=true;
                ConnectionHandler.releaseConnection(wc);
                if(r.exp>0) expires=r.exp; // refresh possible Expires for Microsoft IIS 4.0
-	       if(r.etag!=null) etag=r.etag;   // update Etag info
+               if(r.etag!=null) etag=r.etag;   // update Etag info
                if(mgr.loglevel>3) System.out.println("Checked: "+dir.getLocalDir()+localname);
+               send_request(dir.getLocalDir()+localname, r);
                if(clims>0) { /* musime poslat objekt z cache */
                              r.ims=0;
                              r.etag=null;
@@ -848,6 +881,7 @@ final private void refresh_object(request r) throws IOException
                delta=(date-clims);
 
  if(mgr.loglevel>3) System.out.println("Refreshed: "+n+" (delta="+printDelta(delta)+", size="+size+" B)");
+ send_request(dir.getLocalDir()+localname, r);
  if(auto_compress>0) compress(9);
  if(!r.cacheable && save_noncacheable) {
 	 /* set fetch date to very old date for forcing refresh */
