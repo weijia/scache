@@ -1,1 +1,6 @@
 doc/copyright
+Codes is copied from http://sourceforge.net/projects/scache/files/scache
+License: GPL
+
+Added lib beanstemc from https://github.com/safl/beanstemc.
+License: GPL
