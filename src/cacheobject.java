@@ -94,7 +94,7 @@ void send_request(String local_path, request r)
 		}
 	 try
 	 {
-		 beanstalk_inst.use("scache_input_tube");
+		 beanstalk_inst.use("ScacheStorageServiceApp_default_cmd_tube_name");
 		 String json_str = String.format("{\"cached_path\":\"%s\", \"url\":\"%s\"}", 
 				 local_path.replace("\\", "/"), r.URL);
 		 beanstalk_inst.put(json_str.getBytes());
