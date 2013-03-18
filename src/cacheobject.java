@@ -83,8 +83,15 @@ Beanstemc beanstalk_inst;
 void send_request(String local_path, request r)
 {
 	if(null == this.beanstalk_inst)
+	{
+		String port_str = System.getenv("ufs_beanstalkd_port");
+		int port = 8112;
+		if(port_str != null)
+		{
+			port = Integer.parseInt(port_str);
+		}
 		try {
-			this.beanstalk_inst = new Beanstemc("127.0.0.1", 8112);
+			this.beanstalk_inst = new Beanstemc("127.0.0.1", port);
 		} catch (UnknownHostException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -92,6 +99,7 @@ void send_request(String local_path, request r)
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
 	 try
 	 {
 		 beanstalk_inst.use("ScacheStorageServiceApp_default_cmd_tube_name");
