@@ -92,27 +92,33 @@ void send_request(String local_path, request r)
 		}
 		try {
 			this.beanstalk_inst = new Beanstemc("127.0.0.1", port);
+			//System.out.println("Connecting 127.0.0.1:"+port);
 		} catch (UnknownHostException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			System.out.println("UnknownHostException");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			System.out.println("IOException");
 		}
 	}
 	 try
 	 {
-		 beanstalk_inst.use("ScacheStorageServiceApp_default_cmd_tube_name");
+		 beanstalk_inst.use("ScacheStorageServiceApp_default_cmd_input_tube_name");
 		 String json_str = String.format("{\"cached_path\":\"%s\", \"url\":\"%s\"}", 
 				 local_path.replace("\\", "/"), r.URL);
 		 beanstalk_inst.put(json_str.getBytes());
+		 //System.out.println("Put string:"+json_str);
 	 }
 	 catch(BeanstemcException e)
 	 {
 		 e.printStackTrace();
+		 System.out.println("BeanstemcException");
 	 } catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
+		System.out.println("IOException");
 	}
 	
 }
