@@ -82,6 +82,8 @@ Beanstemc beanstalk_inst;
 
 void send_request(String local_path, request r)
 {
+	File local_file = new File(local_path);
+	local_path = local_file.getAbsolutePath();
 	if(null == this.beanstalk_inst)
 	{
 		String port_str = System.getenv("ufs_beanstalkd_port");
